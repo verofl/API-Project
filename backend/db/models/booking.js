@@ -9,12 +9,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Booking.belongsTo(models.User, {
-        foreignKey: "userId",
-      });
-
       Booking.belongsTo(models.Spot, {
         foreignKey: "spotId",
+      });
+
+      Booking.belongsTo(models.User, {
+        foreignKey: "userId",
       });
     }
   }
@@ -28,9 +28,9 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           isDate: true,
           validateDate(date) {
-            let today = new Date();
-            let startingDate = new Date(date);
-            if (startingDate <= today)
+            let today = new Date().toDateString();
+            let startDate = new Date(date).toDateString();
+            if (startDate <= today)
               throw new Error("startDate cannot be in the past");
           },
         },

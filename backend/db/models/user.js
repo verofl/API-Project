@@ -5,14 +5,14 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
       // define association here
-      User.hasMany(models.Booking, {
-        foreignKey: "userId",
+      User.hasMany(models.Spot, {
+        foreignKey: "ownerId",
         onDelete: "CASCADE",
         hooks: true,
       });
 
-      User.hasMany(models.Spot, {
-        foreignKey: "ownerId",
+      User.hasMany(models.Booking, {
+        foreignKey: "userId",
         onDelete: "CASCADE",
         hooks: true,
       });
@@ -45,6 +45,13 @@ module.exports = (sequelize, DataTypes) => {
               throw new Error("Cannot be an email.");
             }
           },
+        },
+      },
+      hashedPassword: {
+        type: DataTypes.STRING.BINARY,
+        allowNull: false,
+        validate: {
+          len: [60, 60],
         },
       },
       firstName: {
