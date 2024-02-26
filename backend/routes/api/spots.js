@@ -11,9 +11,9 @@ const {
 const router = express.Router();
 
 // Get All Spots
-router.get("/", async (req, res, next) => {
+router.get("/", async (req, res) => {
   const spotsArray = [];
-  const spots = await Spot.findAll({
+  const allSpots = await Spot.findAll({
     include: [
       {
         model: Review,
@@ -25,33 +25,40 @@ router.get("/", async (req, res, next) => {
       },
     ],
   });
-  for (let spot of spots) {
+
+  for (let eachSpot of allSpots) {
+    // Function to get the average rating of each spot
+    let totalStars = 0;
+    let totalReviews = 0;
+
+    for (let eachReview of eachSpot.Reviews) {
+      totalStars += eachReview.stars; // total amount of stars for all reviews
+      totalReviews++; // total amount of reviews for each spot
+    }
+
+    let avgRating = totalStars / totalReviews;
+    if (avgRating !== "null") avgRating = "No Reviews Yet";
+
     spotsArray.push({
-      id: spot.id,
-      ownerId: spot.ownerId,
-      address: spot.address,
-      city: spot.city,
-      state: spot.state,
-      country: spot.country,
-      lat: spot.lat,
-      lng: spot.lng,
-      name: spot.name,
-      description: spot.description,
-      price: spot.price,
-      createdAt: spot.createdAt,
-      updatedAt: spot.updatedAt,
-      spotImage: spot.spotImage,
-      /*
-      avgRating: ,            Need to get the average rating of the spot
-      spotImage: ,            Need to grab the url of the place
-      */
+      id: eachSpot.id,
+      ownerId: eachSpot.ownerId,
+      address: eachSpot.address,
+      city: eachSpot.city,
+      state: eachSpot.state,
+      country: eachSpot.country,
+      lat: eachSpot.lat,
+      lng: eachSpot.lng,
+      name: eachSpot.name,
+      description: eachSpot.description,
+      price: eachSpot.price,
+      createdAt: eachSpot.createdAt,
+      updatedAt: eachSpot.updatedAt,
+      avgRating: avgRating,
+      previewImage: eachSpot.SpotImages[0].url, // Take the first spot image URL
     });
   }
 
-  return res.json({ Spots: spotsArray });
+  return res.status(200).json({ Spots: spotsArray });
 });
-
-// Get All Spots Owned By the Current User
-// router.get("./current", async);
 
 module.exports = router;
