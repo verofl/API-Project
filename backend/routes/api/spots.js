@@ -25,11 +25,33 @@ router.get("/", async (req, res, next) => {
       },
     ],
   });
-  for (let eachSpot of spots) {
-    spotsArray.push(eachSpot);
+  for (let spot of spots) {
+    spotsArray.push({
+      id: spot.id,
+      ownerId: spot.ownerId,
+      address: spot.address,
+      city: spot.city,
+      state: spot.state,
+      country: spot.country,
+      lat: spot.lat,
+      lng: spot.lng,
+      name: spot.name,
+      description: spot.description,
+      price: spot.price,
+      createdAt: spot.createdAt,
+      updatedAt: spot.updatedAt,
+      spotImage: spot.spotImage,
+      /*
+      avgRating: ,            Need to get the average rating of the spot
+      spotImage: ,            Need to grab the url of the place
+      */
+    });
   }
 
-  return res.json(spotsArray);
+  return res.json({ Spots: spotsArray });
 });
+
+// Get All Spots Owned By the Current User
+// router.get("./current", async);
 
 module.exports = router;
