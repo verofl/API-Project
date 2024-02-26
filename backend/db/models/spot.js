@@ -34,10 +34,14 @@ module.exports = (sequelize, DataTypes) => {
   }
   Spot.init(
     {
-      ownerId: DataTypes.INTEGER,
+      ownerId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
       address: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
         validate: {
           notEmpty: true,
         },
@@ -46,7 +50,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          isAlpha: true,
           notEmpty: true,
         },
       },
@@ -54,7 +57,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          isAlpha: true,
           notEmpty: true,
         },
       },
@@ -62,13 +64,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          isAlpha: true,
           notEmpty: true,
         },
       },
       lat: {
         type: DataTypes.DECIMAL,
-        allowNull: false,
         validate: {
           min: -90,
           max: 90,
@@ -76,7 +76,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       lng: {
         type: DataTypes.DECIMAL,
-        allowNull: false,
         validate: {
           min: -180,
           max: 180,
