@@ -40,8 +40,15 @@ router.get("/", async (req, res) => {
       totalReviews++; // total amount of reviews for each spot
     }
 
+    if (!avgRating) avgRating = "No Reviews Yet";
     let avgRating = totalStars / totalReviews;
-    if (avgRating === "null") avgRating = "No Reviews Yet";
+
+    let previewImage;
+    if (!eachSpot.SpotImages.length) {
+      previewImage = "No Preview Image";
+    } else {
+      previewImage = eachSpot.SpotImages[0].url;
+    }
 
     spotsArray.push({
       id: eachSpot.id,
@@ -58,7 +65,7 @@ router.get("/", async (req, res) => {
       createdAt: eachSpot.createdAt,
       updatedAt: eachSpot.updatedAt,
       avgRating: avgRating,
-      previewImage: eachSpot.SpotImages[0].url, // Take the first spot image URL
+      previewImage: previewImage, // Take the first spot image URL
     });
   }
 
@@ -98,7 +105,7 @@ router.get("/current", requireAuth, async (req, res) => {
     }
 
     let avgRating = totalStars / totalReviews;
-    if (avgRating === "null") avgRating = "No Reviews Yet";
+    if (!avgRating) avgRating = "No Reviews Yet";
 
     let previewImage;
     if (!eachSpot.SpotImages.length) {
@@ -162,7 +169,7 @@ router.get("/:spotId", async (req, res) => {
     }
 
     let avgRating = totalStars / totalReviews;
-    if (avgRating === "null") avgRating = "No Reviews Yet";
+    if (!avgRating) avgRating = "No Reviews Yet";
 
     return res.status(200).json({
       id: spot.id,
@@ -259,27 +266,77 @@ router.post("/", requireAuth, validateSpot, async (req, res) => {
   });
 });
 
-// Add an Image to a Spot based on the Spot's Id
-// router.post("/:spotId/images", requireAuth, async (req, res) => {
-//   let user = req.user.id;
-//   let { spotId } = req.params;
-//   let { url, preview } = req.body;
-//   let userSpot = await Spot.findByPk(spotId);
-// });
+// Add an Image to a Spot based on the Spot's Id --DONE
+router.post("/:spotId/images", requireAuth, async (req, res) => {
+  let user = req.user.id;
+  let { spotId } = req.params;
+  let { url, preview } = req.body;
+  const userSpot = await Spot.findByPk(spotId);
+
+  if (!userSpot)
+    return res.status(404).json({ message: "Spot couldn't be found" });
+  if (user !== userSpot.ownerId)
+    return res.status(403).json({ message: "Forbidden" });
+
+  const newImage = await SpotImage.create({ spotId, url, preview });
+
+  return res.status(200).json({
+    id: newImage.id,
+    url: newImage.url,
+    preview: newImage.preview,
+  });
+});
 
 // Edit a Spot
+router.put("/:spotId", requireAuth, validateSpot, async (req, res) => {
+  const { address, city, state, country, lat, lng, name, description, price } =
+    req.body;
+  let { spotId } = req.params;
+  const updatedSpot = await Spot.findByPk(spotId);
+  if (!updatedSpot)
+    return res.status(404).json({ message: "Spot couldn't be found" });
+
+  if (address) updatedSpot.address = address;
+  if (city) updatedSpot.city = city;
+  if (state) updatedSpot.state = state;
+  if (country) updatedSpot.country = country;
+  if (lat) updatedSpot.lat = lat;
+  if (lng) updatedSpot.lng = lng;
+  if (name) updatedSpot.name = name;
+  if (description) updatedSpot.description = description;
+  if (price) updatedSpot.price = price;
+
+  await updatedSpot.save();
+
+  return res.status(200).json({
+    id: updatedSpot.id,
+    ownerId: updatedSpot.ownerId,
+    address: updatedSpot.address,
+    city: updatedSpot.city,
+    state: updatedSpot.state,
+    country: updatedSpot.country,
+    lat: updatedSpot.lat,
+    lng: updatedSpot.lng,
+    name: updatedSpot.name,
+    description: updatedSpot.description,
+    price: updatedSpot.price,
+    createdAt: updatedSpot.createdAt,
+    updatedAt: new Date(),
+  });
+});
 
 // Delete a Spot --DONE
 router.delete("/:spotId", requireAuth, async (req, res) => {
   let { spotId } = req.params;
   let user = req.user.id;
 
-  const spot = await Spot.findByPk(spotId);
-  if (!spot) return res.status(404).json({ message: "Spot couldn't be found" });
-  if (user !== spot.ownerId)
+  const userSpot = await Spot.findByPk(spotId);
+  if (!userSpot)
+    return res.status(404).json({ message: "Spot couldn't be found" });
+  if (user !== userSpot.ownerId)
     return res.status(403).json({ message: "Forbidden" });
 
-  await spot.destroy();
+  await userSpot.destroy();
   return res.status(200).json({ message: "Successfully deleted" });
 });
 
@@ -344,5 +401,8 @@ router.get("/:spotId/reviews", async (req, res) => {
     });
   }
 });
+
+// Create a Review for a Spot based on the Spot's id
+router.post("/:spotId/reviews", requireAuth, async (req, res) => {});
 
 module.exports = router;
