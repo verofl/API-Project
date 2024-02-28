@@ -100,6 +100,13 @@ router.get("/current", requireAuth, async (req, res) => {
     let avgRating = totalStars / totalReviews;
     if (avgRating === "null") avgRating = "No Reviews Yet";
 
+    let previewImage;
+    if (!eachSpot.SpotImages.length) {
+      previewImage = "No Preview Image";
+    } else {
+      previewImage = eachSpot.SpotImages[0].url;
+    }
+
     allOwnerSpots.push({
       id: eachSpot.id,
       ownerId: eachSpot.ownerId,
@@ -115,7 +122,7 @@ router.get("/current", requireAuth, async (req, res) => {
       createdAt: eachSpot.createdAt,
       updatedAt: eachSpot.updatedAt,
       avgRating: avgRating,
-      previewImage: eachSpot.SpotImages[0].url, // Take the first spot image URL
+      previewImage: previewImage, // Take the first spot image URL
     });
   }
   return res.status(200).json({ Spots: allOwnerSpots });
@@ -238,6 +245,7 @@ router.post("/", requireAuth, validateSpot, async (req, res) => {
   const newSpot = await Spot.create(spotDetails);
 
   res.status(201).json({
+    id: newSpot.id,
     ownerId: user,
     address: newSpot.address,
     city: newSpot.city,
@@ -259,7 +267,23 @@ router.post("/", requireAuth, validateSpot, async (req, res) => {
 //   let userSpot = await Spot.findByPk(spotId);
 // });
 
-// Get All Reviews by a Spot's id
+// Edit a Spot
+
+// Delete a Spot --DONE
+router.delete("/:spotId", requireAuth, async (req, res) => {
+  let { spotId } = req.params;
+  let user = req.user.id;
+
+  const spot = await Spot.findByPk(spotId);
+  if (!spot) return res.status(404).json({ message: "Spot couldn't be found" });
+  if (user !== spot.ownerId)
+    return res.status(403).json({ message: "Forbidden" });
+
+  await spot.destroy();
+  return res.status(200).json({ message: "Successfully deleted" });
+});
+
+// Get All Reviews by a Spot's id --DONE
 router.get("/:spotId/reviews", async (req, res) => {
   const { spotId } = req.params;
 
@@ -274,6 +298,7 @@ router.get("/:spotId/reviews", async (req, res) => {
         {
           model: Review,
           attributes: [
+            "id",
             "userId",
             "spotId",
             "review",
@@ -287,10 +312,6 @@ router.get("/:spotId/reviews", async (req, res) => {
           model: User,
           attributes: ["id", "firstName", "lastName"],
         },
-        // {
-        //   model: ReviewImage,
-        //   attributes: ["id", "url"],
-        // },
       ],
     });
 
