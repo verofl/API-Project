@@ -52,7 +52,12 @@ router.get("/current", requireAuth, async (req, res) => {
     ],
   });
 
+  if (!allReviews.length) allUserReviews = "No Reviews Yet";
+
   for (let eachReview of allReviews) {
+    if (eachReview.ReviewImages.length == 0)
+      eachReview.ReviewImages = "No Reviews Images";
+
     allUserReviews.push({
       id: eachReview.id,
       userId: eachReview.userId,
