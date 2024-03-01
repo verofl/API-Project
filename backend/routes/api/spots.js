@@ -85,6 +85,12 @@ const validateDates = [
   handleValidationErrors,
 ];
 
+// Query Parameters
+const queryParameters = [
+  check("page").optional().isInt({ min: 1, max: 10 }),
+  handleValidationErrors,
+];
+
 // Get All Spots -- DONE
 router.get("/", async (req, res) => {
   const spotsArray = [];
