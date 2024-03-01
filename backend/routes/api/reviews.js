@@ -3,7 +3,6 @@ const {
   User,
   Spot,
   SpotImage,
-  Booking,
   Review,
   ReviewImage,
 } = require("../../db/models");
