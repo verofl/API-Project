@@ -124,7 +124,8 @@ const queryParameters = [
 
 // Get All Spots -- DONE
 router.get("/", queryParameters, async (req, res) => {
-  let { page, size, minLat, minLng, maxLng, minPrice, maxPrice } = req.query;
+  let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } =
+    req.query;
 
   if (!page || isNaN(parseInt(page))) page = 1;
   if (!size || isNaN(parseInt(size))) size = 20;
@@ -405,7 +406,7 @@ router.put("/:spotId", requireAuth, validateSpot, async (req, res) => {
   const updatedSpot = await Spot.findByPk(spotId);
   if (!updatedSpot)
     return res.status(404).json({ message: "Spot couldn't be found" });
-  if (user !== userSpot.ownerId)
+  if (user !== updatedSpot.ownerId)
     return res.status(403).json({ message: "Forbidden" });
 
   if (address) updatedSpot.address = address;
