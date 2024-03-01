@@ -118,7 +118,7 @@ router.get("/", async (req, res) => {
     if (!eachSpot.SpotImages.length) {
       previewImage = "No Preview Image";
     } else {
-      previewImage = eachSpot.SpotImages[0].url;
+      previewImage = eachSpot.SpotImages[0].url; // Take the first spot image URL
     }
 
     spotsArray.push({
