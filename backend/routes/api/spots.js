@@ -583,8 +583,14 @@ router.post(
       where: {
         spotId,
         [Op.or]: [
-          { startDate: { [Op.between]: [startDate, endDate] } },
-          { endDate: { [Op.between]: [startDate, endDate] } },
+          {
+            startDate: {
+              [Op.between]: [new Date(startDate), new Date(endDate)],
+            },
+          },
+          {
+            endDate: { [Op.between]: [new Date(startDate), new Date(endDate)] },
+          },
           {
             [Op.and]: [
               { startDate: { [Op.lte]: new Date(endDate) } },
