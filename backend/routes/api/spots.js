@@ -11,7 +11,6 @@ const { Op } = require("sequelize");
 const { requireAuth } = require("../../utils/auth");
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
-// const { isFloat } = require("validator");
 
 const router = express.Router();
 
@@ -183,7 +182,7 @@ router.get("/current", requireAuth, async (req, res) => {
     if (!eachSpot.SpotImages.length) {
       previewImage = "No Preview Image";
     } else {
-      previewImage = eachSpot.SpotImages[0].url;
+      previewImage = eachSpot.SpotImages[0].url; // Take the first spot image URL
     }
 
     allOwnerSpots.push({
@@ -201,7 +200,7 @@ router.get("/current", requireAuth, async (req, res) => {
       createdAt: eachSpot.createdAt,
       updatedAt: eachSpot.updatedAt,
       avgRating: avgRating,
-      previewImage: previewImage, // Take the first spot image URL
+      previewImage: previewImage,
     });
   }
   return res.status(200).json({ Spots: allOwnerSpots });
@@ -494,7 +493,7 @@ router.post(
 
     const bookingSpot = await Spot.findByPk(spotId);
     if (!bookingSpot)
-      return res.json(404).json({ message: "Spot couldn't be found" });
+      return res.status(404).json({ message: "Spot couldn't be found" });
     if (userId == bookingSpot.ownerId)
       return res.status(403).json({ message: "Forbidden" });
 
@@ -502,8 +501,8 @@ router.post(
       where: {
         spotId,
         [Op.or]: [
-          { startDate: { [Op.between]: new Date(startDate) } },
-          { endDate: { [Op.between]: new Date(endDate) } },
+          { startDate: { [Op.between]: [startDate, endDate] } },
+          { endDate: { [Op.between]: [startDate, endDate] } },
           {
             [Op.and]: [
               { startDate: { [Op.lte]: new Date(endDate) } },

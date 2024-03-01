@@ -28,8 +28,8 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           isDate: true,
           validateDate(date) {
-            let today = new Date().toDateString();
-            let startDate = new Date(date).toDateString();
+            let today = new Date();
+            let startDate = new Date(date);
             if (startDate <= today)
               throw new Error("startDate cannot be in the past");
           },

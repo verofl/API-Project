@@ -122,12 +122,12 @@ router.post("/:reviewId/images", requireAuth, async (req, res) => {
     return res.status(404).json({ message: "Review couldn't be found" });
   if (user !== userReview.userId)
     return res.status(403).json({ message: "Forbidden" });
-  let images = await ReviewImage.count({
+  const existingImages = await ReviewImage.findAll({
     where: {
       reviewId,
     },
   });
-  if (images >= 10)
+  if (existingImages.length >= 10)
     return res.status(403).json({
       message: "Maximum number of images for this resource was reached",
     });
