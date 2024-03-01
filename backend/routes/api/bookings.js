@@ -106,7 +106,7 @@ router.get("/current", requireAuth, async (req, res) => {
   return res.status(200).json({ Bookings: allUserBookings });
 });
 
-// Edit a Booking
+// Edit a Booking -- DONE
 router.put("/:bookingId", requireAuth, validateDates, async (req, res) => {
   const userId = req.user.id;
   const { startDate, endDate } = req.body;

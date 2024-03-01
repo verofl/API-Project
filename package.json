@@ -17,15 +17,8 @@
     "start": "npm start --prefix backend",
     "build": "npm run --prefix backend build"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/verofl/API-Project.git"
-  },
+
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/verofl/API-Project/issues"
-  },
-  "homepage": "https://github.com/verofl/API-Project#readme"
+  "license": "ISC"
 }
