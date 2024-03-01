@@ -87,12 +87,86 @@ const validateDates = [
 
 // Query Parameters
 const queryParameters = [
-  check("page").optional().isInt({ min: 1, max: 10 }),
+  check("page")
+    .optional()
+    .isInt({ min: 1, max: 10 })
+    .withMessage("Page must be greater than or equal to 1"),
+  check("size")
+    .optional()
+    .isInt({ min: 1, max: 20 })
+    .withMessage("Size must be greater than or equal to 1"),
+  check("minLat")
+    .isFloat({ min: -90, max: 90 })
+    .optional()
+    .withMessage("Minimum latitude is invalid"),
+  check("maxLat")
+    .isFloat({ min: -90, max: 90 })
+    .optional()
+    .withMessage("Maximum latitude is invalid"),
+  check("minLng")
+    .isFloat({ min: -180, max: 180 })
+    .optional()
+    .withMessage("Maximum longitude is invalid"),
+  check("maxLng")
+    .isFloat({ min: -180, max: 180 })
+    .optional()
+    .withMessage("Minimum longitude is invalid"),
+  check("minPrice")
+    .isFloat({ min: 0 })
+    .optional()
+    .withMessage("Minimum price must be greater than or equal to 0"),
+  check("maxPrice")
+    .isFloat({ min: 0 })
+    .optional()
+    .withMessage("Maximum price must be greater than or equal to 0"),
   handleValidationErrors,
 ];
 
 // Get All Spots -- DONE
-router.get("/", async (req, res) => {
+router.get("/", queryParameters, async (req, res) => {
+  let { page, size, minLat, minLng, maxLng, minPrice, maxPrice } = req.query;
+
+  if (!page || isNaN(parseInt(page))) page = 1;
+  if (!size || isNaN(parseInt(size))) size = 20;
+
+  let queryObj = {
+    where: {},
+  };
+
+  queryObj.limit = size;
+  queryObj.offset = size * (page - 1);
+
+  if (minLat) {
+    queryObj.where.lat = {
+      [Op.gte]: parseFloat(minLat),
+    };
+  }
+  if (maxLat) {
+    queryObj.where.lat = {
+      [Op.lte]: parseFloat(maxLat),
+    };
+  }
+  if (minLng) {
+    queryObj.where.lng = {
+      [Op.gte]: parseFloat(minLng),
+    };
+  }
+  if (maxLng) {
+    queryObj.where.lng = {
+      [Op.lte]: parseFloat(maxLng),
+    };
+  }
+  if (minPrice) {
+    queryObj.where.price = {
+      [Op.gte]: parseFloat(minPrice),
+    };
+  }
+  if (maxPrice) {
+    queryObj.where.price = {
+      [Op.lte]: parseFloat(maxPrice),
+    };
+  }
+
   const spotsArray = [];
   const allSpots = await Spot.findAll({
     include: [
@@ -105,6 +179,7 @@ router.get("/", async (req, res) => {
         attributes: ["url"],
       },
     ],
+    ...queryObj,
   });
 
   // Get the average rating of each spot
@@ -145,8 +220,9 @@ router.get("/", async (req, res) => {
       previewImage: previewImage, // Take the first spot image URL
     });
   }
-
-  return res.status(200).json({ Spots: spotsArray });
+  return res
+    .status(200)
+    .json({ Spots: spotsArray, page: parseInt(page), size: parseInt(size) });
 });
 
 // Get All Spots Owned By the Current User -- DONE
