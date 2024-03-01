@@ -122,9 +122,15 @@ router.put("/:bookingId", requireAuth, validateDates, async (req, res) => {
         spotId: userBooking.spotId,
         [Op.or]: [
           // Finding booking dates with startDate between old Booking booking timeline
-          { startDate: { [Op.between]: [startDate, endDate] } },
+          {
+            startDate: {
+              [Op.between]: [new Date(startDate), new Date(endDate)],
+            },
+          },
           // Finding booking dates with endDate between old Booking booking timeline
-          { endDate: { [Op.between]: [startDate, endDate] } },
+          {
+            endDate: { [Op.between]: [new Date(startDate), new Date(endDate)] },
+          },
           {
             [Op.and]: [
               // Finding startDate before AND endDate after
