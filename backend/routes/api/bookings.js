@@ -6,7 +6,7 @@ const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
 const router = express.Router();
 
-// Validate Dates
+// Validate Dates -- DONE
 const validateDates = [
   check("startDate")
     .exists({ checkFalsy: true })
@@ -81,17 +81,17 @@ router.get("/current", requireAuth, async (req, res) => {
         city: eachBooking.Spot.city,
         state: eachBooking.Spot.state,
         country: eachBooking.Spot.country,
-        lat: eachBooking.Spot.lat,
-        lng: eachBooking.Spot.lng,
+        lat: parseFloat(eachBooking.Spot.lat),
+        lng: parseFloat(eachBooking.Spot.lng),
         name: eachBooking.Spot.name,
-        price: eachBooking.Spot.price,
+        price: parseFloat(eachBooking.Spot.price),
         previewImage,
       },
       userId,
-      startDate: eachBooking.startDate,
-      endDate: eachBooking.endDate,
-      createdAt: eachBooking.createdAt,
-      updatedAt: eachBooking.updatedAt,
+      startDate: new Date(eachBooking.startDate).toLocaleDateString(),
+      endDate: new Date(eachBooking.endDate).toLocaleDateString(),
+      createdAt: new Date(eachBooking.createdAt).toLocaleDateString(),
+      updatedAt: new Date(eachBooking.updatedAt).toLocaleDateString(),
     });
   }
   if (!allUserBookings.length)
@@ -154,8 +154,9 @@ router.put("/:bookingId", requireAuth, validateDates, async (req, res) => {
     }
   }
 
-  if (startDate) userBooking.startDate = startDate;
-  if (endDate) userBooking.endDate = endDate;
+  if (startDate)
+    userBooking.startDate = new Date(startDate).toLocaleDateString();
+  if (endDate) userBooking.endDate = new Date(endDate).toLocaleDateString();
 
   await userBooking.save();
   return res.status(200).json(userBooking);
