@@ -82,8 +82,8 @@ router.get("/current", requireAuth, async (req, res) => {
       spotId: eachReview.spotId,
       review: eachReview.review,
       stars: parseFloat(eachReview.stars),
-      createdAt: new Date(eachReview.createdAt).toLocaleDateString(),
-      updatedAt: new Date(eachReview.updatedAt).toLocaleDateString(),
+      createdAt: new Date(eachReview.createdAt).toLocaleString(),
+      updatedAt: new Date(eachReview.updatedAt).toLocaleString(),
       User: {
         id: eachReview.User.id,
         firstName: eachReview.User.firstName,
@@ -153,7 +153,7 @@ router.put("/:reviewId", requireAuth, validateReviews, async (req, res) => {
 
   if (review) updatedReview.review = review;
   if (stars) updatedReview.stars = parseFloat(stars);
-  updatedReview.updatedAt = new Date().toLocaleDateString();
+  updatedReview.updatedAt = new Date().toLocaleString();
 
   await updatedReview.save();
 
