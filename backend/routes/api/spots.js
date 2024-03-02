@@ -259,7 +259,7 @@ router.get("/current", requireAuth, async (req, res) => {
     }
 
     let avgRating = totalStars / totalReviews;
-    if (!avgRating) avgRating = "No Reviews Yet";
+    if (isNaN(avgRating)) avgRating = "No Reviews Yet";
 
     let previewImage;
     if (!eachSpot.SpotImages.length) {
@@ -323,7 +323,7 @@ router.get("/:spotId", async (req, res) => {
     }
 
     let avgRating = totalStars / totalReviews;
-    if (!avgRating) avgRating = "No Reviews Yet";
+    if (isNaN(avgRating)) avgRating = "No Reviews Yet";
 
     return res.status(200).json({
       id: spot.id,
@@ -358,21 +358,17 @@ router.post("/", requireAuth, validateSpot, async (req, res) => {
 
   const ownerId = req.user.id;
 
-  const latInteger = parseFloat(lat);
-  const lngInteger = parseFloat(lng);
-  const priceInteger = parseFloat(price);
-
   const spotDetails = {
     ownerId,
     address,
     city,
     state,
     country,
-    lat: latInteger,
-    lng: lngInteger,
+    lat: parseFloat(lat),
+    lng: parseFloat(lng),
     name,
     description,
-    price: priceInteger,
+    price: parseFloat(price),
     createdAt: new Date().toLocaleString(),
     updatedAt: new Date().toLocaleString(),
   };
@@ -424,8 +420,8 @@ router.put("/:spotId", requireAuth, validateSpot, async (req, res) => {
   if (name) updatedSpot.name = name;
   if (description) updatedSpot.description = description;
   if (price) updatedSpot.price = parseFloat(price);
-  updatedSpot.createdAt = new Date(updatedSpot.createdAt).toLocaleString();
-  updatedSpot.updatedAt = new Date(updatedSpot.updatedAt).toLocaleString();
+  if (updatedSpot) updatedSpot.createdAt = new Date().toLocaleString();
+  if (updatedSpot) updatedSpot.updatedAt = new Date().toLocaleString();
 
   await updatedSpot.save();
 
@@ -515,8 +511,8 @@ router.post(
       spotId,
       review,
       stars: starInteger,
-      createdAt: new Date(newReview.createdAt).toLocaleString(),
-      updatedAt: new Date(newReview.updatedAt).toLocaleString(),
+      createdAt: new Date().toLocaleString(),
+      updatedAt: new Date().toLocaleString(),
     });
 
     return res.status(201).json(newReview);
