@@ -90,8 +90,8 @@ router.get("/current", requireAuth, async (req, res) => {
       userId,
       startDate: new Date(eachBooking.startDate).toLocaleDateString(),
       endDate: new Date(eachBooking.endDate).toLocaleDateString(),
-      createdAt: new Date(eachBooking.createdAt).toLocaleDateString(),
-      updatedAt: new Date(eachBooking.updatedAt).toLocaleDateString(),
+      createdAt: new Date(eachBooking.createdAt).toLocaleString(),
+      updatedAt: new Date(eachBooking.updatedAt).toLocaleString(),
     });
   }
   if (!allUserBookings.length)
