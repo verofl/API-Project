@@ -373,6 +373,8 @@ router.post("/", requireAuth, validateSpot, async (req, res) => {
     name,
     description,
     price: priceInteger,
+    createdAt: new Date().toLocaleString(),
+    updatedAt: new Date().toLocaleString(),
   };
 
   const newSpot = await Spot.create(spotDetails);
@@ -422,7 +424,8 @@ router.put("/:spotId", requireAuth, validateSpot, async (req, res) => {
   if (name) updatedSpot.name = name;
   if (description) updatedSpot.description = description;
   if (price) updatedSpot.price = parseFloat(price);
-  updatedSpot.updatedAt = new Date();
+  updatedSpot.createdAt = new Date(updatedSpot.createdAt).toLocaleString();
+  updatedSpot.updatedAt = new Date(updatedSpot.updatedAt).toLocaleString();
 
   await updatedSpot.save();
 
@@ -475,6 +478,9 @@ router.get("/:spotId/reviews", async (req, res) => {
     ],
   });
 
+  allReviews.createdAt = new Date(allReviews.createdAt).toLocaleString;
+  allReviews.updatedAt = new Date(allReviews.updatedAt).toLocaleString;
+
   return res.json({ Reviews: allReviews });
 });
 
@@ -509,6 +515,8 @@ router.post(
       spotId,
       review,
       stars: starInteger,
+      createdAt: new Date(newReview.createdAt).toLocaleString(),
+      updatedAt: new Date(newReview.updatedAt).toLocaleString(),
     });
 
     return res.status(201).json(newReview);
@@ -565,6 +573,9 @@ router.get("/:spotId/bookings", requireAuth, async (req, res) => {
       ],
     });
   }
+
+  allBookings.createdAt = new Date(allBookings.createdAt).toLocaleString();
+  allBookings.updatedAt = new Date(allBookings.updatedAt).toLocaleString();
 
   return res.status(200).json({ Bookings: allBookings });
 });
@@ -624,6 +635,8 @@ router.post(
       userId,
       startDate: startingDate,
       endDate: endingDate,
+      createdAt: new Date().toLocaleString(),
+      updatedAt: new Date().toLocaleString(),
     });
     return res.status(200).json(newBooking);
   }
