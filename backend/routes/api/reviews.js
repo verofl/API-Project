@@ -81,9 +81,9 @@ router.get("/current", requireAuth, async (req, res) => {
       userId: eachReview.userId,
       spotId: eachReview.spotId,
       review: eachReview.review,
-      stars: eachReview.stars,
-      createdAt: eachReview.createdAt,
-      updatedAt: eachReview.updatedAt,
+      stars: parseFloat(eachReview.stars),
+      createdAt: new Date(eachReview.createdAt).toLocaleDateString(),
+      updatedAt: new Date(eachReview.updatedAt).toLocaleDateString(),
       User: {
         id: eachReview.User.id,
         firstName: eachReview.User.firstName,
@@ -96,10 +96,10 @@ router.get("/current", requireAuth, async (req, res) => {
         city: eachReview.Spot.city,
         state: eachReview.Spot.state,
         country: eachReview.Spot.country,
-        lat: eachReview.Spot.lat,
-        lng: eachReview.Spot.lng,
+        lat: parseFloat(eachReview.Spot.lat),
+        lng: parseFloat(eachReview.Spot.lng),
         name: eachReview.Spot.name,
-        price: eachReview.Spot.price,
+        price: parseFloat(eachReview.Spot.price),
         previewImage: previewImage,
       },
       ReviewImages: eachReview.ReviewImages,
@@ -152,8 +152,8 @@ router.put("/:reviewId", requireAuth, validateReviews, async (req, res) => {
     return res.status(403).json({ message: "Forbidden" });
 
   if (review) updatedReview.review = review;
-  if (stars) updatedReview.stars = stars;
-  updatedReview.updatedAt = new Date();
+  if (stars) updatedReview.stars = parseFloat(stars);
+  updatedReview.updatedAt = new Date().toLocaleDateString();
 
   await updatedReview.save();
 

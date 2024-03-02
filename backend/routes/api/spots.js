@@ -96,28 +96,28 @@ const queryParameters = [
     .isInt({ min: 1, max: 20 })
     .withMessage("Size must be greater than or equal to 1"),
   check("minLat")
-    .isFloat({ min: -90, max: 90 })
     .optional()
+    .isFloat({ min: -90, max: 90 })
     .withMessage("Minimum latitude is invalid"),
   check("maxLat")
-    .isFloat({ min: -90, max: 90 })
     .optional()
+    .isFloat({ min: -90, max: 90 })
     .withMessage("Maximum latitude is invalid"),
   check("minLng")
-    .isFloat({ min: -180, max: 180 })
     .optional()
+    .isFloat({ min: -180, max: 180 })
     .withMessage("Maximum longitude is invalid"),
   check("maxLng")
-    .isFloat({ min: -180, max: 180 })
     .optional()
+    .isFloat({ min: -180, max: 180 })
     .withMessage("Minimum longitude is invalid"),
   check("minPrice")
-    .isFloat({ min: 0 })
     .optional()
+    .isFloat({ min: 0 })
     .withMessage("Minimum price must be greater than or equal to 0"),
   check("maxPrice")
-    .isFloat({ min: 0 })
     .optional()
+    .isFloat({ min: 0 })
     .withMessage("Maximum price must be greater than or equal to 0"),
   handleValidationErrors,
 ];
@@ -210,15 +210,15 @@ router.get("/", queryParameters, async (req, res) => {
       city: eachSpot.city,
       state: eachSpot.state,
       country: eachSpot.country,
-      lat: eachSpot.lat,
-      lng: eachSpot.lng,
+      lat: parseFloat(eachSpot.lat),
+      lng: parseFloat(eachSpot.lng),
       name: eachSpot.name,
       description: eachSpot.description,
-      price: eachSpot.price,
-      createdAt: eachSpot.createdAt,
-      updatedAt: eachSpot.updatedAt,
-      avgRating: avgRating,
-      previewImage: previewImage, // Take the first spot image URL
+      price: parseFloat(eachSpot.price),
+      createdAt: new Date(eachSpot.createdAt).toLocaleDateString(),
+      updatedAt: new Date(eachSpot.updatedAt).toLocaleDateString(),
+      avgRating: parseFloat(avgRating),
+      previewImage: previewImage,
     });
   }
   return res
@@ -275,14 +275,14 @@ router.get("/current", requireAuth, async (req, res) => {
       city: eachSpot.city,
       state: eachSpot.state,
       country: eachSpot.country,
-      lat: eachSpot.lat,
-      lng: eachSpot.lng,
+      lat: parseFloat(eachSpot.lat),
+      lng: parseFloat(eachSpot.lng),
       name: eachSpot.name,
       description: eachSpot.description,
-      price: eachSpot.price,
-      createdAt: eachSpot.createdAt,
-      updatedAt: eachSpot.updatedAt,
-      avgRating: avgRating,
+      price: parseFloat(eachSpot.price),
+      createdAt: new Date(eachSpot.createdAt).toLocaleDateString(),
+      updatedAt: new Date(eachSpot.updatedAt).toLocaleDateString(),
+      avgRating: parseFloat(avgRating),
       previewImage: previewImage,
     });
   }
@@ -332,15 +332,15 @@ router.get("/:spotId", async (req, res) => {
       city: spot.city,
       state: spot.state,
       country: spot.country,
-      lat: spot.lat,
-      lng: spot.lng,
+      lat: parseFloat(spot.lat),
+      lng: parseFloat(spot.lng),
       name: spot.name,
       description: spot.description,
-      price: spot.price,
-      createdAt: spot.createdAt,
-      updatedAt: spot.updatedAt,
-      numReviews: totalReviews,
-      avgStarRating: avgRating,
+      price: parseFloat(spot.price),
+      createdAt: new Date(spot.createdAt).toLocaleDateString(),
+      updatedAt: new Date(spot.updatedAt).toLocaleDateString(),
+      numReviews: parseFloat(totalReviews),
+      avgStarRating: parseFloat(avgRating),
       SpotImages: spot.SpotImages,
       Owner: spot.User,
     });
@@ -358,17 +358,21 @@ router.post("/", requireAuth, validateSpot, async (req, res) => {
 
   const ownerId = req.user.id;
 
+  const latInteger = parseFloat(lat);
+  const lngInteger = parseFloat(lng);
+  const priceInteger = parseFloat(price);
+
   const spotDetails = {
     ownerId,
     address,
     city,
     state,
     country,
-    lat,
-    lng,
+    lat: latInteger,
+    lng: lngInteger,
     name,
     description,
-    price,
+    price: priceInteger,
   };
 
   const newSpot = await Spot.create(spotDetails);
@@ -413,11 +417,11 @@ router.put("/:spotId", requireAuth, validateSpot, async (req, res) => {
   if (city) updatedSpot.city = city;
   if (state) updatedSpot.state = state;
   if (country) updatedSpot.country = country;
-  if (lat) updatedSpot.lat = lat;
-  if (lng) updatedSpot.lng = lng;
+  if (lat) updatedSpot.lat = parseFloat(lat);
+  if (lng) updatedSpot.lng = parseFloat(lng);
   if (name) updatedSpot.name = name;
   if (description) updatedSpot.description = description;
-  if (price) updatedSpot.price = price;
+  if (price) updatedSpot.price = parseFloat(price);
   updatedSpot.updatedAt = new Date();
 
   await updatedSpot.save();
@@ -499,11 +503,12 @@ router.post(
         .status(500)
         .json({ message: "User already has a review for this spot" });
 
+    const starInteger = parseFloat(stars);
     const newReview = await Review.create({
       userId,
       spotId,
       review,
-      stars,
+      stars: starInteger,
     });
 
     return res.status(201).json(newReview);
@@ -611,11 +616,14 @@ router.post(
         },
       });
     }
+
+    const startingDate = new Date(startDate).toLocaleDateString();
+    const endingDate = new Date(endDate).toLocaleDateString();
     const newBooking = await Booking.create({
       spotId,
       userId,
-      startDate,
-      endDate,
+      startDate: startingDate,
+      endDate: endingDate,
     });
     return res.status(200).json(newBooking);
   }
