@@ -153,7 +153,12 @@ router.put("/:reviewId", requireAuth, validateReviews, async (req, res) => {
 
   if (review) updatedReview.review = review;
   if (stars) updatedReview.stars = parseFloat(stars);
-  updatedReview.updatedAt = new Date().toLocaleString();
+  (updatedReview.createdAt = new Date(
+    updatedReview.createdAt
+  ).toLocaleString()),
+    (updatedReview.updatedAt = new Date(
+      updatedReview.updatedAt
+    ).toLocaleString());
 
   await updatedReview.save();
 
