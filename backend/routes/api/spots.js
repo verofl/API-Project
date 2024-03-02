@@ -90,11 +90,15 @@ const queryParameters = [
   check("page")
     .optional()
     .isInt({ min: 1, max: 10 })
-    .withMessage("Page must be greater than or equal to 1"),
+    .withMessage(
+      "Page must be greater than or equal to 1, and less than or equal to 10"
+    ),
   check("size")
     .optional()
     .isInt({ min: 1, max: 20 })
-    .withMessage("Size must be greater than or equal to 1"),
+    .withMessage(
+      "Size must be greater than or equal to 1, and less than or equal to 20"
+    ),
   check("minLat")
     .optional()
     .isFloat({ min: -90, max: 90 })
@@ -127,8 +131,8 @@ router.get("/", queryParameters, async (req, res) => {
   let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } =
     req.query;
 
-  if (!page || isNaN(parseInt(page))) page = 1;
-  if (!size || isNaN(parseInt(size))) size = 20;
+  if (!page || isNaN(parseInt(page)) || page < 1) page = 1;
+  if (!size || isNaN(parseInt(size)) || size < 1) size = 20;
 
   let queryObj = {
     where: {},
@@ -258,8 +262,12 @@ router.get("/current", requireAuth, async (req, res) => {
       totalReviews++; // total amount of reviews for each spot
     }
 
-    let avgRating = totalStars / totalReviews;
-    if (isNaN(avgRating)) avgRating = "No Reviews Yet";
+    let avgRating;
+    if (totalReviews == 0) {
+      avgRating = "No Reviews Yet";
+    } else {
+      avgRating = totalStars / totalReviews;
+    }
 
     let previewImage;
     if (!eachSpot.SpotImages.length) {
@@ -322,8 +330,12 @@ router.get("/:spotId", async (req, res) => {
       totalReviews++; // total amount of reviews for each spot
     }
 
-    let avgRating = totalStars / totalReviews;
-    if (isNaN(avgRating)) avgRating = "No Reviews Yet";
+    let avgRating;
+    if (totalReviews == 0) {
+      avgRating = "No Reviews Yet";
+    } else {
+      avgRating = totalStars / totalReviews;
+    }
 
     return res.status(200).json({
       id: spot.id,
@@ -420,8 +432,8 @@ router.put("/:spotId", requireAuth, validateSpot, async (req, res) => {
   if (name) updatedSpot.name = name;
   if (description) updatedSpot.description = description;
   if (price) updatedSpot.price = parseFloat(price);
-  if (updatedSpot) updatedSpot.createdAt = new Date().toLocaleString();
-  if (updatedSpot) updatedSpot.updatedAt = new Date().toLocaleString();
+  updatedSpot.createdAt = new Date().toLocaleString();
+  updatedSpot.updatedAt = new Date().toLocaleString();
 
   await updatedSpot.save();
 
