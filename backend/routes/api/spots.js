@@ -198,15 +198,15 @@ router.get("/", queryParameters, async (req, res) => {
       totalReviews++; // total amount of reviews for each spot
     }
 
-    // let avgRating = totalStars / totalReviews;
-    // if (!avgRating) avgRating = "No Reviews Yet";
+    let avgRating = totalStars / totalReviews;
+    if (avgRating == null) avgRating = "No Reviews Yet";
 
-    let avgRating;
-    if (totalReviews == 0) {
-      avgRating = "No Reviews Yet";
-    } else {
-      avgRating = totalStars / totalReviews;
-    }
+    // let avgRating;
+    // if (totalReviews == 0) {
+    //   avgRating = "No Reviews Yet";
+    // } else {
+    //   avgRating = totalStars / totalReviews;
+    // }
 
     let previewImage;
     if (!eachSpot.SpotImages.length) {
@@ -270,12 +270,14 @@ router.get("/current", requireAuth, async (req, res) => {
       totalReviews++; // total amount of reviews for each spot
     }
 
-    let avgRating;
-    if (totalReviews == 0) {
-      avgRating = "No Reviews Yet";
-    } else {
-      avgRating = totalStars / totalReviews;
-    }
+    let avgRating = totalStars / totalReviews;
+    if (avgRating == null) avgRating = "No Reviews Yet";
+    // let avgRating;
+    // if (totalReviews == 0) {
+    //   avgRating = "No Reviews Yet";
+    // } else {
+    //   avgRating = totalStars / totalReviews;
+    // }
 
     let previewImage;
     if (!eachSpot.SpotImages.length) {
@@ -296,11 +298,16 @@ router.get("/current", requireAuth, async (req, res) => {
       name: eachSpot.name,
       description: eachSpot.description,
       price: parseFloat(eachSpot.price),
-      createdAt: new Date(eachSpot.createdAt).toLocaleString,
-      updatedAt: new Date(eachSpot.createdAt).toLocaleString,
+      createdAt: new Date(eachSpot.createdAt).toLocaleString(),
+      updatedAt: new Date(eachSpot.createdAt).toLocaleString(),
       avgRating: parseFloat(avgRating),
       previewImage: previewImage,
     });
+
+    if (allOwnerSpots.length == 0)
+      return res
+        .status(200)
+        .json({ Spots: "You do not currently own any spots" });
   }
   return res.status(200).json({ Spots: allOwnerSpots });
 });
@@ -338,12 +345,14 @@ router.get("/:spotId", async (req, res) => {
       totalReviews++; // total amount of reviews for each spot
     }
 
-    let avgRating;
-    if (totalReviews == 0) {
-      avgRating = "No Reviews Yet";
-    } else {
-      avgRating = totalStars / totalReviews;
-    }
+    let avgRating = totalStars / totalReviews;
+    if (avgRating == null) avgRating = "No Reviews Yet";
+    // let avgRating;
+    // if (totalReviews == 0) {
+    //   avgRating = "No Reviews Yet";
+    // } else {
+    //   avgRating = totalStars / totalReviews;
+    // }
 
     // let spotsImages;
     // if (spot.SpotImages.length == 0) spotsImages = "No Spot Images Yet";
@@ -381,26 +390,33 @@ router.post("/", requireAuth, validateSpot, async (req, res) => {
 
   const ownerId = req.user.id;
 
-  const latInteger = parseFloat(lat);
-  const lngInteger = parseFloat(lng);
-  const priceInteger = parseFloat(price);
+  // const spotDetails = {
+  //   ownerId,
+  //   address,
+  //   city,
+  //   state,
+  //   country,
+  //   lat,
+  //   lng,
+  //   name,
+  //   description,
+  //   price,
+  //   // createdAt: new Date().toLocaleString(),
+  //   // updatedAt: new Date().toLocaleString(),
+  // };
 
-  const spotDetails = {
+  const newSpot = await Spot.create({
     ownerId,
     address,
     city,
     state,
     country,
-    lat: latInteger,
-    lng: lngInteger,
+    lat,
+    lng,
     name,
     description,
-    price: priceInteger,
-    createdAt: new Date().toLocaleString(),
-    updatedAt: new Date().toLocaleString(),
-  };
-
-  const newSpot = await Spot.create(spotDetails);
+    price,
+  });
 
   res.status(201).json(newSpot);
 });
@@ -501,7 +517,7 @@ router.get("/:spotId/reviews", async (req, res) => {
     ],
   });
 
-  if (allReviews.length === 0) return res.json({ message: "No Reviews Yet" });
+  if (allReviews.length === 0) return res.json({ Reviews: "No Reviews Yet" });
 
   // allReviews.forEach((review) => {
   // });
@@ -583,7 +599,7 @@ router.get("/:spotId/bookings", requireAuth, async (req, res) => {
         where: {
           spotId,
         },
-        attributes: ["id", "spotId", "startDate", "endDate"],
+        attributes: ["spotId", "startDate", "endDate"],
       });
       // return res.status(403).json({ message: "Forbidden" });
     }
