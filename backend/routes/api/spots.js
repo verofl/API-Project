@@ -503,10 +503,10 @@ router.get("/:spotId/reviews", async (req, res) => {
 
   if (allReviews.length === 0) return res.json({ message: "No Reviews Yet" });
 
-  allReviews.forEach((review) => {
-    allReviews.createdAt = new Date(allReviews.createdAt).toLocaleString;
-    allReviews.updatedAt = new Date(allReviews.updatedAt).toLocaleString;
-  });
+  // allReviews.forEach((review) => {
+  // });
+  allReviews.createdAt = new Date().toLocaleString;
+  allReviews.updatedAt = new Date().toLocaleString;
 
   return res.json({ Reviews: allReviews });
 });
@@ -664,8 +664,8 @@ router.post(
       userId,
       startDate: startingDate,
       endDate: endingDate,
-      createdAt: new Date(createdAt).toLocaleString(),
-      updatedAt: new Date(updatedAt).toLocaleString(),
+      createdAt: new Date().toLocaleString(),
+      updatedAt: new Date().toLocaleString(),
     });
     return res.status(200).json(newBooking);
   }
