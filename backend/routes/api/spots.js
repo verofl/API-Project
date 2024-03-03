@@ -284,8 +284,6 @@ router.get("/current", requireAuth, async (req, res) => {
       previewImage = eachSpot.SpotImages[0].url; // Take the first spot image URL
     }
 
-    const createdAtDate = new Date(eachSpot.createdAt).toLocaleString;
-    const updatedAtDate = new Date(eachSpot.createdAt).toLocaleString;
     allOwnerSpots.push({
       id: eachSpot.id,
       ownerId: eachSpot.ownerId,
@@ -298,8 +296,8 @@ router.get("/current", requireAuth, async (req, res) => {
       name: eachSpot.name,
       description: eachSpot.description,
       price: parseFloat(eachSpot.price),
-      createdAt: createdAtDate,
-      updatedAt: updatedAtDate,
+      createdAt: new Date(eachSpot.createdAt).toLocaleString,
+      updatedAt: new Date(eachSpot.createdAt).toLocaleString,
       avgRating: parseFloat(avgRating),
       previewImage: previewImage,
     });
@@ -347,8 +345,8 @@ router.get("/:spotId", async (req, res) => {
       avgRating = totalStars / totalReviews;
     }
 
-    let spotsImages;
-    if (spot.SpotImages.length == 0) spotsImages = "No Spot Images Yet";
+    // let spotsImages;
+    // if (spot.SpotImages.length == 0) spotsImages = "No Spot Images Yet";
 
     return res.status(200).json({
       id: spot.id,
@@ -366,7 +364,7 @@ router.get("/:spotId", async (req, res) => {
       updatedAt: new Date(spot.updatedAt).toLocaleString(),
       numReviews: parseFloat(totalReviews),
       avgStarRating: parseFloat(avgRating),
-      SpotImages: spotsImages,
+      SpotImages: spot.SpotImages,
       Owner: spot.User,
     });
   } catch {
@@ -383,17 +381,21 @@ router.post("/", requireAuth, validateSpot, async (req, res) => {
 
   const ownerId = req.user.id;
 
+  const latInteger = parseFloat(lat);
+  const lngInteger = parseFloat(longitude);
+  const priceInteger = parseFloat(price);
+
   const spotDetails = {
     ownerId,
     address,
     city,
     state,
     country,
-    lat: parseFloat(lat),
-    lng: parseFloat(lng),
+    lat: latInteger,
+    lng: lngInteger,
     name,
     description,
-    price: parseFloat(price),
+    price: priceInteger,
     createdAt: new Date().toLocaleString(),
     updatedAt: new Date().toLocaleString(),
   };
@@ -601,10 +603,8 @@ router.get("/:spotId/bookings", requireAuth, async (req, res) => {
     });
   }
 
-  allBookings.forEach((booking) => {
-    allBookings.createdAt = new Date(allBookings.createdAt).toLocaleString();
-    allBookings.updatedAt = new Date(allBookings.updatedAt).toLocaleString();
-  });
+  allBookings.createdAt = new Date(allBookings.createdAt).toLocaleString();
+  allBookings.updatedAt = new Date(allBookings.updatedAt).toLocaleString();
 
   return res.status(200).json({ Bookings: allBookings });
 });
