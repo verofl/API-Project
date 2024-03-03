@@ -157,8 +157,8 @@ router.put("/:bookingId", requireAuth, validateDates, async (req, res) => {
   if (startDate)
     userBooking.startDate = new Date(startDate).toLocaleDateString();
   if (endDate) userBooking.endDate = new Date(endDate).toLocaleDateString();
-  userBooking.updatedAt = new Date(userBooking.updatedAt).toLocaleString();
-  userBooking.createdAt = new Date(userBooking.createdAt).toLocaleString();
+  userBooking.updatedAt = new Date().toLocaleString();
+  userBooking.createdAt = new Date().toLocaleString();
 
   await userBooking.save();
   return res.status(200).json(userBooking);
