@@ -400,19 +400,9 @@ router.post("/", requireAuth, validateSpot, async (req, res) => {
     price,
   });
 
-  // const spotDetails = {
-  //   id:
-  //   ownerId,
-  //   address,
-  //   city,
-  //   state,
-  //   country,
-  //   lat: parseFloat(lat),
-  //   lng: parseFloat(lng),
-  //   name,
-  //   description,
-  //   price: parseFloat(price),
-  // };
+  if (newSpot.lat) newSpot.lat = parseFloat(lat);
+  if (newSpot.lng) newSpot.lng = parseFloat(lng);
+  if (newSpot.price) newSpot.price = parseFloat(price);
 
   return res.status(201).json(newSpot);
 });
