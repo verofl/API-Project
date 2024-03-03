@@ -382,7 +382,7 @@ router.post("/", requireAuth, validateSpot, async (req, res) => {
   const ownerId = req.user.id;
 
   const latInteger = parseFloat(lat);
-  const lngInteger = parseFloat(longitude);
+  const lngInteger = parseFloat(lng);
   const priceInteger = parseFloat(price);
 
   const spotDetails = {
