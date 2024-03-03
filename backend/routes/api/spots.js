@@ -90,16 +90,12 @@ const validateDates = [
 const queryParameters = [
   check("page")
     .optional()
-    .isInt({ min: 1, max: 10 })
-    .withMessage(
-      "Page must be greater than or equal to 1, and less than or equal to 10"
-    ),
+    .isInt({ min: 1 })
+    .withMessage("Page must be greater than or equal to 1"),
   check("size")
     .optional()
-    .isInt({ min: 1, max: 20 })
-    .withMessage(
-      "Size must be greater than or equal to 1, and less than or equal to 20"
-    ),
+    .isInt({ min: 1 })
+    .withMessage("Size must be greater than or equal to 1"),
   check("minLat")
     .optional()
     .isFloat({ min: -90, max: 90 })
@@ -132,8 +128,8 @@ router.get("/", queryParameters, async (req, res) => {
   let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } =
     req.query;
 
-  if (!page || isNaN(parseInt(page)) || page < 1) page = 1;
-  if (!size || isNaN(parseInt(size)) || size < 1) size = 20;
+  if (!page || isNaN(parseInt(page)) || page > 10) page = 1;
+  if (!size || isNaN(parseInt(size)) || size > 20) size = 20;
 
   let queryObj = {
     where: {},
@@ -197,10 +193,6 @@ router.get("/", queryParameters, async (req, res) => {
       totalStars += eachReview.stars; // total amount of stars for all reviews
       totalReviews++; // total amount of reviews for each spot
     }
-
-    // let avgRating;
-    // if (totalReviews == 0) avgRating = "No Reviews Yet";
-    // if(totalReviews > 0) avgRating = parseFloat(totalStars / totalReviews);
 
     let avgRating;
     if (totalReviews == 0) {
