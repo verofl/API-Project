@@ -271,8 +271,6 @@ router.get("/current", requireAuth, async (req, res) => {
       totalReviews++; // total amount of reviews for each spot
     }
 
-    // let avgRating = totalStars / totalReviews;
-    // if (avgRating == null) avgRating = "No Reviews Yet";
     let avgRating;
     if (totalReviews == 0) {
       avgRating = "No Reviews Yet";
@@ -304,12 +302,11 @@ router.get("/current", requireAuth, async (req, res) => {
       avgRating: avgRating,
       previewImage: previewImage,
     });
-
-    if (allOwnerSpots.length == 0)
-      return res
-        .status(200)
-        .json({ Spots: "You do not currently own any spots" });
   }
+  if (!allSpots.length)
+    return res
+      .status(200)
+      .json({ Spots: "You do not currently own any spots" });
   return res.status(200).json({ Spots: allOwnerSpots });
 });
 
@@ -388,23 +385,7 @@ router.get("/:spotId", async (req, res) => {
 router.post("/", requireAuth, validateSpot, async (req, res) => {
   const { address, city, state, country, lat, lng, name, description, price } =
     req.body;
-
   const ownerId = req.user.id;
-
-  // const spotDetails = {
-  //   ownerId,
-  //   address,
-  //   city,
-  //   state,
-  //   country,
-  //   lat,
-  //   lng,
-  //   name,
-  //   description,
-  //   price,
-  //   // createdAt: new Date().toLocaleString(),
-  //   // updatedAt: new Date().toLocaleString(),
-  // };
 
   const newSpot = await Spot.create({
     ownerId,
@@ -412,14 +393,28 @@ router.post("/", requireAuth, validateSpot, async (req, res) => {
     city,
     state,
     country,
-    lat: parseFloat(lat),
-    lng: parseFloat(lng),
+    lat,
+    lng,
     name,
     description,
-    price: parseFloat(price),
+    price,
   });
 
-  res.status(201).json(newSpot);
+  // const spotDetails = {
+  //   id:
+  //   ownerId,
+  //   address,
+  //   city,
+  //   state,
+  //   country,
+  //   lat: parseFloat(lat),
+  //   lng: parseFloat(lng),
+  //   name,
+  //   description,
+  //   price: parseFloat(price),
+  // };
+
+  return res.status(201).json(newSpot);
 });
 
 // Add an Image to a Spot based on the Spot's Id --DONE
