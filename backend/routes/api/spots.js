@@ -11,6 +11,7 @@ const { Op } = require("sequelize");
 const { requireAuth } = require("../../utils/auth");
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
+const { each } = require("lodash");
 
 const router = express.Router();
 
@@ -90,11 +91,15 @@ const queryParameters = [
   check("page")
     .optional()
     .isInt({ min: 1, max: 10 })
-    .withMessage("Page must be greater than or equal to 1"),
+    .withMessage(
+      "Page must be greater than or equal to 1, and less than or equal to 10"
+    ),
   check("size")
     .optional()
     .isInt({ min: 1, max: 20 })
-    .withMessage("Size must be greater than or equal to 1"),
+    .withMessage(
+      "Size must be greater than or equal to 1, and less than or equal to 20"
+    ),
   check("minLat")
     .optional()
     .isFloat({ min: -90, max: 90 })
@@ -127,8 +132,8 @@ router.get("/", queryParameters, async (req, res) => {
   let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } =
     req.query;
 
-  if (!page || isNaN(parseInt(page))) page = 1;
-  if (!size || isNaN(parseInt(size))) size = 20;
+  if (!page || isNaN(parseInt(page)) || page < 1) page = 1;
+  if (!size || isNaN(parseInt(size)) || size < 1) size = 20;
 
   let queryObj = {
     where: {},
@@ -193,8 +198,15 @@ router.get("/", queryParameters, async (req, res) => {
       totalReviews++; // total amount of reviews for each spot
     }
 
-    let avgRating = totalStars / totalReviews;
-    if (!avgRating) avgRating = "No Reviews Yet";
+    // let avgRating = totalStars / totalReviews;
+    // if (!avgRating) avgRating = "No Reviews Yet";
+
+    let avgRating;
+    if (totalReviews == 0) {
+      avgRating = "No Reviews Yet";
+    } else {
+      avgRating = totalStars / totalReviews;
+    }
 
     let previewImage;
     if (!eachSpot.SpotImages.length) {
@@ -258,8 +270,12 @@ router.get("/current", requireAuth, async (req, res) => {
       totalReviews++; // total amount of reviews for each spot
     }
 
-    let avgRating = totalStars / totalReviews;
-    if (isNaN(avgRating)) avgRating = "No Reviews Yet";
+    let avgRating;
+    if (totalReviews == 0) {
+      avgRating = "No Reviews Yet";
+    } else {
+      avgRating = totalStars / totalReviews;
+    }
 
     let previewImage;
     if (!eachSpot.SpotImages.length) {
@@ -268,6 +284,8 @@ router.get("/current", requireAuth, async (req, res) => {
       previewImage = eachSpot.SpotImages[0].url; // Take the first spot image URL
     }
 
+    const createdAtDate = new Date(eachSpot.createdAt).toLocaleString;
+    const updatedAtDate = new Date(eachSpot.createdAt).toLocaleString;
     allOwnerSpots.push({
       id: eachSpot.id,
       ownerId: eachSpot.ownerId,
@@ -280,8 +298,8 @@ router.get("/current", requireAuth, async (req, res) => {
       name: eachSpot.name,
       description: eachSpot.description,
       price: parseFloat(eachSpot.price),
-      createdAt: new Date(eachSpot.createdAt).toLocaleString(),
-      updatedAt: new Date(eachSpot.updatedAt).toLocaleString(),
+      createdAt: createdAtDate,
+      updatedAt: updatedAtDate,
       avgRating: parseFloat(avgRating),
       previewImage: previewImage,
     });
@@ -322,8 +340,15 @@ router.get("/:spotId", async (req, res) => {
       totalReviews++; // total amount of reviews for each spot
     }
 
-    let avgRating = totalStars / totalReviews;
-    if (isNaN(avgRating)) avgRating = "No Reviews Yet";
+    let avgRating;
+    if (totalReviews == 0) {
+      avgRating = "No Reviews Yet";
+    } else {
+      avgRating = totalStars / totalReviews;
+    }
+
+    let spotsImages;
+    if (spot.SpotImages.length == 0) spotsImages = "No Spot Images Yet";
 
     return res.status(200).json({
       id: spot.id,
@@ -341,7 +366,7 @@ router.get("/:spotId", async (req, res) => {
       updatedAt: new Date(spot.updatedAt).toLocaleString(),
       numReviews: parseFloat(totalReviews),
       avgStarRating: parseFloat(avgRating),
-      SpotImages: spot.SpotImages,
+      SpotImages: spotsImages,
       Owner: spot.User,
     });
   } catch {
@@ -420,8 +445,8 @@ router.put("/:spotId", requireAuth, validateSpot, async (req, res) => {
   if (name) updatedSpot.name = name;
   if (description) updatedSpot.description = description;
   if (price) updatedSpot.price = parseFloat(price);
-  if (updatedSpot) updatedSpot.createdAt = new Date().toLocaleString();
-  if (updatedSpot) updatedSpot.updatedAt = new Date().toLocaleString();
+  updatedSpot.createdAt = new Date().toLocaleString();
+  updatedSpot.updatedAt = new Date().toLocaleString();
 
   await updatedSpot.save();
 
@@ -474,8 +499,12 @@ router.get("/:spotId/reviews", async (req, res) => {
     ],
   });
 
-  allReviews.createdAt = new Date(allReviews.createdAt).toLocaleString;
-  allReviews.updatedAt = new Date(allReviews.updatedAt).toLocaleString;
+  if (allReviews.length === 0) return res.json({ message: "No Reviews Yet" });
+
+  allReviews.forEach((review) => {
+    allReviews.createdAt = new Date(allReviews.createdAt).toLocaleString;
+    allReviews.updatedAt = new Date(allReviews.updatedAt).toLocaleString;
+  });
 
   return res.json({ Reviews: allReviews });
 });
@@ -506,13 +535,15 @@ router.post(
         .json({ message: "User already has a review for this spot" });
 
     const starInteger = parseFloat(stars);
+    const createdAtDate = new Date().toLocaleString();
+    const updatedAtDate = new Date().toLocaleString();
     const newReview = await Review.create({
       userId,
       spotId,
       review,
       stars: starInteger,
-      createdAt: new Date().toLocaleString(),
-      updatedAt: new Date().toLocaleString(),
+      createdAt: createdAtDate,
+      updatedAt: updatedAtDate,
     });
 
     return res.status(201).json(newReview);
@@ -570,8 +601,10 @@ router.get("/:spotId/bookings", requireAuth, async (req, res) => {
     });
   }
 
-  allBookings.createdAt = new Date(allBookings.createdAt).toLocaleString();
-  allBookings.updatedAt = new Date(allBookings.updatedAt).toLocaleString();
+  allBookings.forEach((booking) => {
+    allBookings.createdAt = new Date(allBookings.createdAt).toLocaleString();
+    allBookings.updatedAt = new Date(allBookings.updatedAt).toLocaleString();
+  });
 
   return res.status(200).json({ Bookings: allBookings });
 });
@@ -631,8 +664,8 @@ router.post(
       userId,
       startDate: startingDate,
       endDate: endingDate,
-      createdAt: new Date().toLocaleString(),
-      updatedAt: new Date().toLocaleString(),
+      createdAt: new Date(createdAt).toLocaleString(),
+      updatedAt: new Date(updatedAt).toLocaleString(),
     });
     return res.status(200).json(newBooking);
   }
