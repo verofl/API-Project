@@ -1,0 +1,36 @@
+.signup-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 95%;
+  gap: 10px;
+}
+
+.signup-header {
+  color: #183d3d;
+}
+
+.signup-labels {
+  width: 100%;
+}
+
+.signup-inputs {
+  width: 98%;
+  background-color: #dee7e4;
+}
+
+.signup-button {
+  margin-top: 10px;
+  width: 100%;
+  height: 50px;
+  box-shadow: 5px 5px 5px grey;
+  background-color: #183d3d;
+  color: white;
+  border: black solid 1px;
+}

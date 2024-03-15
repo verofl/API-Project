@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
-import * as sessionActions from '../../store/session';
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
+import * as sessionActions from "../../store/session";
 
 function SignupFormPage() {
   const dispatch = useDispatch();
@@ -26,7 +26,7 @@ function SignupFormPage() {
           username,
           firstName,
           lastName,
-          password
+          password,
         })
       ).catch(async (res) => {
         const data = await res.json();
@@ -36,7 +36,8 @@ function SignupFormPage() {
       });
     }
     return setErrors({
-      confirmPassword: "Confirm Password field must be the same as the Password field"
+      confirmPassword:
+        "Confirm Password field must be the same as the Password field",
     });
   };
 

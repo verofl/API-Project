@@ -1,0 +1,36 @@
+.login-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 95%;
+  gap: 10px;
+}
+
+.login-header {
+  color: #183d3d;
+}
+
+.login-labels {
+  width: 100%;
+}
+
+.login-inputs {
+  width: 98%;
+  background-color: #dee7e4;
+}
+
+.login-button {
+  margin-top: 10px;
+  width: 100%;
+  height: 50px;
+  box-shadow: 5px 5px 5px grey;
+  background-color: #183d3d;
+  color: white;
+  border: black solid 1px;
+}
