@@ -25,6 +25,12 @@
   background-color: #dee7e4;
 }
 
+.login-inputs:focus {
+  border-color: #5c8374;
+  box-shadow: 0 0 10px #5c8374;
+  outline: none;
+}
+
 .login-button {
   margin-top: 10px;
   width: 100%;
