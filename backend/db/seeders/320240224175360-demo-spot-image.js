@@ -32,7 +32,7 @@ module.exports = {
       {
         // Moonstone Palace
         spotId: 4,
-        url: "https://i.imghippo.com/files/SBulX1708836835.jpg",
+        url: "https://i.imghippo.com/files/JsDUV1710704395.jpg",
         preview: true,
       },
       {

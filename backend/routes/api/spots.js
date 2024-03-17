@@ -196,7 +196,7 @@ router.get("/", queryParameters, async (req, res) => {
 
     let avgRating;
     if (totalReviews == 0) {
-      avgRating = "No Reviews Yet";
+      avgRating = "New";
     } else {
       avgRating = totalStars / totalReviews;
     }
@@ -265,7 +265,7 @@ router.get("/current", requireAuth, async (req, res) => {
 
     let avgRating;
     if (totalReviews == 0) {
-      avgRating = "No Reviews Yet";
+      avgRating = "New";
     } else {
       avgRating = totalStars / totalReviews;
     }
@@ -339,7 +339,7 @@ router.get("/:spotId", async (req, res) => {
     // if (avgRating == null) avgRating = "No Reviews Yet";
     let avgRating;
     if (totalReviews == 0) {
-      avgRating = "No Reviews Yet";
+      avgRating = "New";
     } else {
       avgRating = totalStars / totalReviews;
     }
@@ -495,7 +495,7 @@ router.get("/:spotId/reviews", async (req, res) => {
     ],
   });
 
-  if (allReviews.length === 0) return res.json({ Reviews: "No Reviews Yet" });
+  if (allReviews.length === 0) return res.json({ Reviews: "New" });
 
   // allReviews.forEach((review) => {
   // });
