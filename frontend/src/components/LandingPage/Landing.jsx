@@ -5,8 +5,8 @@ import { getAllSpots } from "../../store/spotsReducer";
 import "./Landing.css";
 
 const Landing = () => {
-  const spotsObj = useSelector((state) => state.spotsState.spots);
-  const spots = Object.values(spotsObj);
+  const spotsObj = useSelector((state) => state.spotsState);
+  const spots = Object.values(spotsObj.spots);
 
   const dispatch = useDispatch();
 
@@ -19,7 +19,6 @@ const Landing = () => {
       {spots.map((spot) => (
         <Spot data={spot} key={spot.id} />
       ))}
-      {/* console.log("Hello") */}
     </div>
   );
 };

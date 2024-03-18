@@ -202,10 +202,14 @@ router.get("/", queryParameters, async (req, res) => {
     }
 
     let previewImage;
-    if (!eachSpot.SpotImages.length) {
+    const spotImage = await SpotImage.findOne({
+      where: { spotId: eachSpot.id },
+      order: [["id", "ASC"]], // Order SpotImages by ID in ascending order
+    });
+    if (!spotImage) {
       previewImage = "No Preview Image";
     } else {
-      previewImage = eachSpot.SpotImages[0].url; // Take the first spot image URL
+      previewImage = spotImage.url;
     }
 
     spotsArray.push({
@@ -249,6 +253,7 @@ router.get("/current", requireAuth, async (req, res) => {
       {
         model: SpotImage,
         attributes: ["url"],
+        order: [["id", "ASC"]],
       },
     ],
   });
@@ -271,10 +276,14 @@ router.get("/current", requireAuth, async (req, res) => {
     }
 
     let previewImage;
-    if (!eachSpot.SpotImages.length) {
+    const spotImage = await SpotImage.findOne({
+      where: { spotId: eachSpot.id },
+      order: [["id", "ASC"]], // Order SpotImages by ID in ascending order
+    });
+    if (!spotImage) {
       previewImage = "No Preview Image";
     } else {
-      previewImage = eachSpot.SpotImages[0].url; // Take the first spot image URL
+      previewImage = spotImage.url;
     }
 
     allOwnerSpots.push({
@@ -363,7 +372,7 @@ router.get("/:spotId", async (req, res) => {
       updatedAt: new Date(spot.updatedAt).toLocaleString(),
       numReviews: parseFloat(totalReviews),
       avgStarRating: avgRating,
-      SpotImages: spot.SpotImages,
+      SpotImages: spot.SpotImages.sort((a, b) => a.id - b.id),
       Owner: spot.User,
     });
   } catch {
