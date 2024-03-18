@@ -1,10 +1,12 @@
+import Spot from "../Spot/Spot";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { getAllSpots } from "../../store/spotsReducer";
 import "./Landing.css";
 
 const Landing = () => {
-  const spots = useSelector((state) => state.spotsState.spots);
+  const spotsObj = useSelector((state) => state.spotsState.spots);
+  const spots = Object.values(spotsObj);
 
   const dispatch = useDispatch();
 
@@ -13,28 +15,11 @@ const Landing = () => {
   }, [dispatch]);
 
   return (
-    <div className="spots-container">
-      {Object.values(spots).map((spot) => (
-        <div key={spot.id} className="spot">
-          <div className="tooltip">
-            <span className="tooltiptext">{spot.name}</span>
-            <img className="image" src={spot.previewImage} />
-          </div>
-          <div className="info">
-            <div className="left">
-              <p className="location">{`${spot.city}, ${spot.state}`}</p>
-              <p className="price">{`$${spot.price} night`}</p>
-            </div>
-            <div className="right">
-              <p>
-                <i className="fa-solid fa-star"></i>
-                {` ${spot.avgRating}`}
-              </p>
-            </div>
-          </div>
-        </div>
+    <div className="all-spots-container">
+      {spots.map((spot) => (
+        <Spot data={spot} key={spot.id} />
       ))}
-      console.log("hello")
+      {/* console.log("Hello") */}
     </div>
   );
 };
