@@ -1,3 +1,10 @@
+input {
+  background-color: #e9efed;
+}
+textarea {
+  background-color: #e9efed;
+}
+
 .form {
   border-bottom: black solid 1px;
   padding-bottom: 20px;

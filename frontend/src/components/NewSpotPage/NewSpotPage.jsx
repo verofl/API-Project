@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function SpotForm() {
+  const [validationErrors, setValidationErrors] = useState({});
   const [country, setCountry] = useState("");
   const [street, setStreet] = useState("");
   const [city, setCity] = useState("");

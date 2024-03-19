@@ -11,13 +11,23 @@
   grid-template-columns: repeat(2, 50% 50%);
   /* padding: 10px; */
   margin-bottom: 20px;
-  border-bottom: black solid 1px;
+  border-bottom: black solid 2px;
   width: 100vw;
   background-color: #183d3d;
 }
 
-.profile-button {
+.spot-link-nav {
   display: grid;
+  align-content: center;
+}
+.new-spot-link {
+  color: white;
+  text-decoration: none;
+}
+
+.profile-button {
+  display: flex;
+  gap: 15px;
   justify-self: right;
   align-items: center;
   padding-right: 10px;
