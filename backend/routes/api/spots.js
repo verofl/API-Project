@@ -198,7 +198,7 @@ router.get("/", queryParameters, async (req, res) => {
     if (totalReviews == 0) {
       avgRating = "New";
     } else {
-      avgRating = totalStars / totalReviews;
+      avgRating = parseFloat(totalStars / totalReviews).toFixed(1);
     }
 
     let previewImage;
@@ -272,7 +272,7 @@ router.get("/current", requireAuth, async (req, res) => {
     if (totalReviews == 0) {
       avgRating = "New";
     } else {
-      avgRating = totalStars / totalReviews;
+      avgRating = parseFloat(totalStars / totalReviews).toFixed(1);
     }
 
     let previewImage;
@@ -350,7 +350,7 @@ router.get("/:spotId", async (req, res) => {
     if (totalReviews == 0) {
       avgRating = "New";
     } else {
-      avgRating = totalStars / totalReviews;
+      avgRating = parseFloat(totalStars / totalReviews).toFixed(1);
     }
 
     // let spotsImages;

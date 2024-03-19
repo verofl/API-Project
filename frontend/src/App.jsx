@@ -41,11 +41,11 @@ const router = createBrowserRouter([
         element: <SpotDetails />,
       },
       {
-        path: "login",
+        path: "/login",
         element: <LoginFormPage />,
       },
       {
-        path: "signup",
+        path: "/signup",
         element: <SignupFormPage />,
       },
     ],
