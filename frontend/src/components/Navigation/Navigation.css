@@ -1,7 +1,35 @@
 .profile-dropdown {
-  position: absolute;
+  position: relative;
 }
 
 .hidden {
   display: none;
+}
+
+.nav-bar {
+  display: grid;
+  grid-template-columns: repeat(2, 50% 50%);
+  /* padding: 10px; */
+  margin-bottom: 20px;
+  border-bottom: black solid 1px;
+  width: 100vw;
+  background-color: #183d3d;
+}
+
+.profile-button {
+  display: grid;
+  justify-self: right;
+  align-items: center;
+  padding-right: 10px;
+}
+
+.logo-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px;
+}
+
+.logo-name {
+  color: white;
 }

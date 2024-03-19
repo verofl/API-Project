@@ -17,7 +17,7 @@ const Landing = () => {
   return (
     <div className="all-spots-container">
       {spots.map((spot) => (
-        <Spot data={spot} key={spot.id} />
+        <Spot data={spot} key={spot.id} className="all-spots-tiles" />
       ))}
     </div>
   );

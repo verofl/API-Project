@@ -1,7 +1,14 @@
 .all-spots-container {
-  /* border: red solid 5px; */
   display: grid;
-  grid-template-columns: repeat(4, 24.4%);
-  overflow: hidden;
+  grid-template-columns: repeat(4, 1fr);
   gap: 15px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.all-spots-tiles {
+  border: 1px solid #ddd;
+  padding: 15px;
+  background-color: #f9f9f9;
 }
