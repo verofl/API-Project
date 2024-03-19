@@ -9,20 +9,16 @@ const SpotDetails = () => {
   const dispatch = useDispatch();
   const spot = useSelector((state) => state.spotsState);
   const spotData = spot[spotId];
-  console.log("SPOT DATA", spotData);
+  // console.log("SPOT DATA", spotData);
 
   useEffect(() => {
     dispatch(getOneSpot(spotId));
   }, [spotId, dispatch]);
 
   return (
-    <div className="spot-details">
+    <div className="spot-details-container">
       {spotData && spotData.name && (
         <>
-          <h1>
-            Hosted By:{" "}
-            {`${spotData.Owner.firstName} ${spotData.Owner.lastName}`}
-          </h1>
           <h2 className="details-name">{spotData.name}</h2>
           <h3 className="details-location">{`${spotData.city}, ${spotData.state}, ${spotData.country}`}</h3>
           <div className="details-img-cont">
@@ -32,12 +28,20 @@ const SpotDetails = () => {
               alt="Spot Preview"
             />
             <div className="four-images">
-              {spotData.SpotImages.slice(0, 4).map((image, index) => (
-                <img key={index} src={image.url} alt={`Image ${index}`} />
+              {spotData.SpotImages.slice(1, 5).map((image, index) => (
+                <img
+                  className="small-images"
+                  key={index}
+                  src={image.url}
+                  alt={`Image ${index}`}
+                />
               ))}
             </div>
           </div>
-          <h2>{spotData.ownerId}</h2>
+          <h1>
+            Hosted By:{" "}
+            {`${spotData.Owner.firstName} ${spotData.Owner.lastName}`}
+          </h1>
         </>
       )}
     </div>

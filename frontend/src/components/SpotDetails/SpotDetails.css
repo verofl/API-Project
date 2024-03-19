@@ -1,0 +1,34 @@
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spot-details-container {
+  max-width: 1000px;
+  /* border: green solid 1px; */
+}
+
+.details-img-cont {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 50%);
+  width: 99.5%;
+  gap: 5px;
+}
+
+.image {
+  height: 100%;
+  object-fit: cover;
+}
+
+.four-images {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: 5px;
+}
+
+.small-images {
+  width: 100%;
+}
