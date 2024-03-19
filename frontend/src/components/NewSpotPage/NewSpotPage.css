@@ -1,0 +1,68 @@
+.form {
+  border-bottom: black solid 1px;
+  padding-bottom: 20px;
+}
+
+.whole-form-container {
+  display: grid;
+  justify-content: center;
+  margin: 0 auto;
+  max-width: 500px;
+}
+
+.new-form-container {
+  display: grid;
+  justify-items: center;
+}
+
+.new {
+  width: 100%;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.city-state {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  justify-content: space-between;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.lat-lng {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  justify-content: space-between;
+}
+
+.price-span {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+.price-input {
+  width: 100%;
+}
+
+.new-photos-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.photo-urls {
+  gap: 15px;
+}
+
+.create-spot-button {
+  margin-top: 15px;
+}
+
+.new-input {
+  width: 98.5%;
+}
