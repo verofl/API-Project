@@ -63,7 +63,12 @@ const SpotDetails = () => {
                   <p>{`${spotData.numReviews} review(s)`}</p>
                 </div>
               </div>
-              <button className="reserve-button">Reserve</button>
+              <button
+                className="reserve-button"
+                onClick={() => alert("Feature Coming Soon...")}
+              >
+                Reserve
+              </button>
             </div>
           </div>
           <div className="reviews-container">
