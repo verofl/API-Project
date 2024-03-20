@@ -10,16 +10,18 @@ function Navigation({ isLoaded }) {
     <div className="nav-bar">
       <div className="logo-container">
         <NavLink to="/">
-          <img src="/favicon.ico" href="/"></img>
+          <img src="/favicon.ico" alt="Logo" />
         </NavLink>
         <h1 className="logo-name">MythicalBnB</h1>
       </div>
       <div className="profile-button">
-        <div className="spot-link-nav">
-          <NavLink className="new-spot-link" to="/spots/new">
-            Create a New Spot
-          </NavLink>
-        </div>
+        {sessionUser && (
+          <div className="spot-link-nav">
+            <NavLink className="new-spot-link" to="/spots/new">
+              Create a New Spot
+            </NavLink>
+          </div>
+        )}
         {isLoaded && <ProfileButton user={sessionUser} />}
       </div>
     </div>

@@ -83,7 +83,6 @@ export default function SpotForm() {
                 type="number"
                 placeholder="Latitude"
                 onChange={(e) => setLat(e.target.value)}
-                required
               />
               ,
             </label>
@@ -94,7 +93,6 @@ export default function SpotForm() {
                 type="number"
                 placeholder="Longitude"
                 onChange={(e) => setLng(e.target.value)}
-                required
               />
             </label>
           </span>

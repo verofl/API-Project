@@ -11,7 +11,7 @@
 .tooltip .tooltiptext {
   visibility: hidden;
   width: 50%;
-  background-color: rgba(211, 223, 219, 0.8);
+  background-color: rgba(233, 239, 237, 0.8);
   color: black;
   text-align: center;
   padding: 5px 0;
@@ -37,6 +37,7 @@
 
 .image {
   width: 100%;
+  /* border-radius: 20px; */
 }
 
 .image:hover {
@@ -48,6 +49,11 @@
   grid-template-columns: repeat(2, auto);
   justify-content: space-between;
   /* border: palegreen solid 1px; */
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.info:hover {
+  cursor: pointer;
 }
 /*
 .fa-star {

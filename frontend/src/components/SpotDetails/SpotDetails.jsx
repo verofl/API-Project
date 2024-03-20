@@ -1,25 +1,25 @@
-import { useParams } from "react-router-dom";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 import { getOneSpot } from "../../store/spotsReducer";
-import { getSpotReviews } from "../../store/reviewsReducer";
+import Reviews from "../Reviews/Reviews";
 import "./SpotDetails.css";
-import { useEffect } from "react";
 
 const SpotDetails = () => {
-  const { spotId } = useParams();
   const dispatch = useDispatch();
+  const { spotId } = useParams();
   const spot = useSelector((state) => state.spotsState);
-  const reviews = useSelector((state) => state.reviewsState);
   const spotData = spot[spotId];
-  // console.log("SPOT DATA", spotData);
-  console.log("REVIEWS", reviews);
 
   useEffect(() => {
     dispatch(getOneSpot(spotId));
-    dispatch(getSpotReviews(spotId));
-  }, [spotId, dispatch]);
+  }, [dispatch, spotId]);
 
-  const reviewsArray = Object.values(reviews?.reviews || {});
+  console.log("SPOT DATA", spotData);
+
+  const handleReservation = () => {
+    alert("Feature Coming Soon...");
+  };
 
   return (
     <div className="spot-details-container">
@@ -60,45 +60,15 @@ const SpotDetails = () => {
                     <i className="fa-solid fa-star"></i>
                     {`${spotData.avgStarRating}`}
                   </p>
-                  <p>{`${spotData.numReviews} review(s)`}</p>
+                  <p>{`${spotData.numReviews} reviews`}</p>
                 </div>
               </div>
-              <button
-                className="reserve-button"
-                onClick={() => alert("Feature Coming Soon...")}
-              >
+              <button className="reserve-button" onClick={handleReservation}>
                 Reserve
               </button>
             </div>
           </div>
-          <div className="reviews-container">
-            <div className="rating-info">
-              <p>
-                <i className="fa-solid fa-star"></i>
-                {`${spotData.avgStarRating}`}
-              </p>
-              <p>{`${spotData.numReviews} review(s)`}</p>
-            </div>
-            <div className="reviews-container">
-              {/* Check if reviewsArray is empty and render "No Reviews Yet" if true */}
-              {reviewsArray.length === 0 ? (
-                <p>No Reviews Yet</p>
-              ) : (
-                reviewsArray.map((review) => (
-                  <div key={review.id} className="each-review">
-                    <h4>{review.User.firstName}</h4>
-                    <p>
-                      {new Date(review.createdAt).toLocaleString(undefined, {
-                        month: "long",
-                        year: "numeric",
-                      })}
-                    </p>
-                    <p>{review.review}</p>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
+          <Reviews />
         </>
       )}
     </div>
