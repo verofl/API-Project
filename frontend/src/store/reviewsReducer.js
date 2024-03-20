@@ -14,23 +14,25 @@ export const getSpotReviews = (spotId) => async (dispatch) => {
   if (response.ok) {
     const reviews = await response.json();
     dispatch(loadReviews(reviews));
+  } else {
+    throw new Error("Error fetching reviews");
   }
 };
 
-const initialState = { reviews: {} };
+// const initialState = { reviews: {} };
 
-const reviewsReducer = (state = initialState, action) => {
+const reviewsReducer = (state = {}, action) => {
   switch (action.type) {
     case GET_REVIEWS: {
-      const newReviews = {};
+      const newReviews = { ...state };
       try {
         action.reviews.Reviews.forEach(
           (eachReview) => (newReviews[eachReview.id] = eachReview)
         );
-        return { ...state, reviews: newReviews };
       } catch {
-        return state;
+        console.error("Error fetching reviews");
       }
+      return newReviews;
     }
 
     default:

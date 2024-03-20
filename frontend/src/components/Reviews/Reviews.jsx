@@ -1,12 +1,14 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getSpotReviews } from "../../store/reviewsReducer";
 
-const Reviews = () => {
+const Reviews = ({ avgStarRating, numReviews }) => {
   const dispatch = useDispatch();
   const reviews = useSelector((state) => state.reviewsState);
   const { spotId } = useParams();
+
+  const reviewsArray = Object.values(reviews);
 
   useEffect(() => {
     dispatch(getSpotReviews(spotId));
@@ -14,10 +16,15 @@ const Reviews = () => {
 
   console.log("REVIEWS", reviews);
 
-  const reviewsArray = Object.values(reviews?.reviews || []);
-
   return (
     <div className="reviews-container">
+      <div className="rating-info">
+        <p>
+          <i className="fa-solid fa-star"></i>
+          {avgStarRating}
+        </p>
+        <p>{`${numReviews} reviews`}</p>
+      </div>
       {reviewsArray.length === 0 ? (
         <p>No Reviews Yet</p>
       ) : (

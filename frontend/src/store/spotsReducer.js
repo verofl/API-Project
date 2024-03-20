@@ -12,11 +12,12 @@ export const oneSpot = (spot) => ({
   type: ONE_SPOT,
   spot,
 });
-
-export const createOneSpot = (spot) => ({
-  type: CREATE_SPOT,
-  spot,
-});
+const createSpot = (spot) => {
+  return {
+    type: CREATE_SPOT,
+    spot,
+  };
+};
 
 export const getAllSpots = () => async (dispatch) => {
   const response = await csrfFetch("/api/spots");
@@ -28,19 +29,57 @@ export const getAllSpots = () => async (dispatch) => {
   }
 };
 
-export const createSpot = () => async (dispatch) => {
-  const response = await csrfFetch("/api/spots/new", {
+export const createNewSpot = (spot, images) => async (dispatch, getState) => {
+  const createSpotImage = async (spotId, url, preview) => {
+    const res = await csrfFetch(`/api/spots/${spotId}/images`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url, preview }),
+    });
+    if (res.ok) {
+      const imageData = await res.json();
+      return { url: imageData.url, preview };
+    }
+    return null;
+  };
+
+  const state = getState();
+  const user = state.session.user;
+  const ownerId = user?.id;
+
+  const res = await csrfFetch("/api/spots", {
     method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(spot),
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ...spot, ownerId }), // Include ownerId in spot data
   });
-  if (response.ok) {
-    const { resSpot } = await response.json();
-    console.log("RESONSE CREATE SPOT", resSpot);
-    dispatch(createOneSpot(resSpot));
+
+  if (res.ok) {
+    const data = await res.json();
+    const spotImages = [];
+    const previewImage = await createSpotImage(
+      data.id,
+      images.previewImage,
+      true
+    );
+    spotImages.push(previewImage);
+
+    const imageKeys = ["image1", "image2", "image3", "image4"];
+    for (const key of imageKeys) {
+      const imageUrl = images[key];
+      if (imageUrl) {
+        const spotImage = await createSpotImage(data.id, imageUrl, false);
+        spotImages.push(spotImage);
+      }
+    }
+
+    data.SpotImages = spotImages;
+    data.Owner = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      id: user.id,
+    };
+    dispatch(createSpot(data));
+    return data;
   }
 };
 
@@ -65,11 +104,8 @@ const spotsReducer = (state = initialState, action) => {
       return newState;
     case ONE_SPOT:
       newState = { ...state, [action.spot.id]: action.spot };
-      return newState;
     case CREATE_SPOT:
-      newState = { ...state };
-      newState.spots[action.spot.id] = action.spot;
-      return newState;
+      return { ...state, [action.spot.id]: action.spot };
     default:
       return state;
   }

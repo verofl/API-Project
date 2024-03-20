@@ -47,8 +47,8 @@ body {
 .reservation-container {
   display: grid;
   grid-template-rows: repeat(2, auto);
-  border: black solid 1px;
-  border-radius: 15px;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
   padding: 10px;
 }
 
@@ -72,6 +72,12 @@ body {
   display: flex;
   flex-direction: row;
   gap: 10px;
+}
+
+.reserve-button {
+  background-color: #183d3d;
+  color: white;
+  border-radius: 20px;
 }
 
 .each-review {
