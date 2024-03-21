@@ -268,7 +268,7 @@ export default function CreateSpot() {
             <div style={{ color: "red" }}>
               {hasSubmitted && validationErrors.previewImage}
             </div>
-            <label className="label">
+            <label className="column photo-urls">
               <input
                 type="url"
                 value={image1}
@@ -283,7 +283,7 @@ export default function CreateSpot() {
                 </span>
               }
             </label>
-            <label className="label">
+            <label className="column photo-urls">
               <input
                 type="url"
                 value={image2}
@@ -298,7 +298,7 @@ export default function CreateSpot() {
                 </span>
               }
             </label>
-            <label className="label">
+            <label className="column photo-urls">
               <input
                 type="url"
                 value={image3}
@@ -313,7 +313,7 @@ export default function CreateSpot() {
                 </span>
               }
             </label>
-            <label className="label">
+            <label className="column photo-urls">
               <input
                 type="url"
                 value={image4}

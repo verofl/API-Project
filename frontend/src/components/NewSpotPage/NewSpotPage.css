@@ -1,5 +1,6 @@
 input {
   background-color: #e9efed;
+  border-radius: 5px;
 }
 textarea {
   background-color: #e9efed;
@@ -14,12 +15,13 @@ textarea {
   display: grid;
   justify-content: center;
   margin: 0 auto;
-  max-width: 500px;
+  max-width: 600px;
 }
 
 .new-form-container {
   display: grid;
   justify-items: center;
+  border-radius: 20px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   padding: 15px;
 }
@@ -38,16 +40,18 @@ textarea {
   display: flex;
   flex-direction: row;
   gap: 15px;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   padding-top: 15px;
   padding-bottom: 15px;
+  width: 100%;
 }
 
 .lat-lng {
   display: flex;
   flex-direction: row;
   gap: 15px;
-  justify-content: space-between;
+  /* justify-content: space-between; */
+  width: 100%;
 }
 
 .price-span {
@@ -70,6 +74,10 @@ textarea {
 
 .create-spot-button {
   margin-top: 15px;
+  background-color: #183d3d;
+  border-radius: 5px;
+  color: white;
+  padding: 10px;
 }
 
 .new-input {

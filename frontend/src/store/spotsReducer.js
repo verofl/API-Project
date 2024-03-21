@@ -3,6 +3,7 @@ import { csrfFetch } from "./csrf";
 const GET_SPOTS = "spotsState/get_spots";
 const ONE_SPOT = "spotsState/one_spot";
 const CREATE_SPOT = "spotsState/create_spot";
+const DELETE_SPOT = "spotsState/delete_spot";
 
 export const loadSpots = (spots) => ({
   type: GET_SPOTS,

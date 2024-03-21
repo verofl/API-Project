@@ -23,6 +23,7 @@
 .login-inputs {
   width: 98%;
   background-color: #e9efed;
+  border-radius: 5px;
 }
 
 .login-inputs:focus {
@@ -35,8 +36,14 @@
   margin-top: 10px;
   width: 100%;
   height: 50px;
+  border-radius: 5px;
   box-shadow: 5px 5px 5px grey;
   background-color: #183d3d;
   color: white;
   border: black solid 1px;
+}
+
+.demo-user-link {
+  padding-top: 20px;
+  color: #183d3d;
 }
