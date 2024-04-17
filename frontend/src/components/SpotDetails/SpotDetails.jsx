@@ -15,7 +15,7 @@ const SpotDetails = () => {
     dispatch(getOneSpot(spotId));
   }, [dispatch, spotId]);
 
-  console.log("SPOT DATA", spotData);
+  console.log("SPOT DATA ===>>>>", spotData);
 
   const handleReservation = () => {
     alert("Feature Coming Soon...");
@@ -60,7 +60,9 @@ const SpotDetails = () => {
                     <i className="fa-solid fa-star"></i>
                     {`${spotData.avgStarRating}`}
                   </p>
-                  <p>{`${spotData.numReviews} reviews`}</p>
+                  <p>{`${spotData.numReviews} ${
+                    spotData.numReviews === 1 ? "review" : "reviews"
+                  }`}</p>
                 </div>
               </div>
               <button className="reserve-button" onClick={handleReservation}>

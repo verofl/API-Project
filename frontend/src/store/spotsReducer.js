@@ -2,10 +2,12 @@ import { csrfFetch } from "./csrf";
 
 const GET_SPOTS = "spotsState/get_spots";
 const ONE_SPOT = "spotsState/one_spot";
+const USER_SPOTS = "spotsState/user_spots";
 const CREATE_SPOT = "spotsState/create_spot";
 const UPDATE_SPOT = "spotsState/update_spot";
 const DELETE_SPOT = "spotsState/delete_spot";
 
+// Action Creator
 export const loadSpots = (spots) => ({
   type: GET_SPOTS,
   spots,
@@ -14,33 +16,42 @@ export const oneSpot = (spot) => ({
   type: ONE_SPOT,
   spot,
 });
-const createSpot = (spot) => {
+export const userSpots = (spots) => ({
+  type: USER_SPOTS,
+  spots,
+});
+export const createSpot = (spot) => {
   return {
     type: CREATE_SPOT,
     spot,
   };
 };
-
 export const updateSpot = (spot) => ({
   type: UPDATE_SPOT,
   spot,
 });
-
 export const deleteSpot = (spotId) => ({
   type: DELETE_SPOT,
   spotId,
 });
 
+// Thunk
 export const getAllSpots = () => async (dispatch) => {
   const response = await csrfFetch("/api/spots");
   if (response.ok) {
     const spots = await response.json();
-    console.log("SPOTS RESPONSE", spots);
-
+    // console.log("SPOTS RESPONSE", spots);
     dispatch(loadSpots(spots));
   }
 };
+export const getUserSpots = () => async (dispatch) => {
+  const response = await csrfFetch("/api/spots/current");
+  if (response.ok) {
+    const spots = await response.json();
 
+    dispatch(userSpots(spots));
+  }
+};
 export const createNewSpot = (spot, images) => async (dispatch, getState) => {
   const state = getState(); // getting the info of the logged in user
   const user = state.session.user; // have to use getState here to get the current user's info
@@ -127,10 +138,12 @@ export const deleteCurrSpot = (spotId) => async (dispatch) => {
   }
 };
 
+// Reducer
 const initialState = { spots: {} };
 
 const spotsReducer = (state = initialState, action) => {
   let newState = {};
+  const deleteState = { ...state };
   switch (action.type) {
     case GET_SPOTS:
       newState = { ...state };
@@ -141,12 +154,18 @@ const spotsReducer = (state = initialState, action) => {
     case ONE_SPOT:
       newState = { ...state, [action.spot.id]: action.spot };
       return newState;
+    case USER_SPOTS:
+      newState = { ...state };
+      newState.spots = {}; // clears all existing spots
+      action.spots.Spots.forEach(
+        (eachSpot) => (newState.spots[eachSpot.id] = eachSpot)
+      );
+      return newState;
     case CREATE_SPOT:
       return { ...state, [action.spot.id]: action.spot };
     case UPDATE_SPOT:
       return { ...state, [action.spot.id]: action.spot };
     case DELETE_SPOT:
-      const deleteState = { ...state };
       delete deleteState[action.spotId];
       return deleteState;
     default:

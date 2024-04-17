@@ -1,0 +1,18 @@
+.create-spot-bttn {
+  background-color: #183d3d;
+  color: white;
+  border-radius: 20px;
+  padding: 10px;
+  width: 15%;
+}
+
+.create-spot-bttn:hover {
+  cursor: pointer;
+}
+
+.manage-container {
+  display: grid;
+  max-width: 1000px;
+  margin: 0 auto;
+  /* padding: 20px; */
+}

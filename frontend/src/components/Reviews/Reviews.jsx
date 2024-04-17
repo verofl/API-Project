@@ -23,7 +23,7 @@ const Reviews = ({ avgStarRating, numReviews }) => {
           <i className="fa-solid fa-star"></i>
           {avgStarRating}
         </p>
-        <p>{`${numReviews} reviews`}</p>
+        <p>{`${numReviews} ${numReviews === 1 ? "review" : "reviews"}`}</p>
       </div>
       {reviewsArray.length === 0 ? (
         <p>No Reviews Yet</p>
