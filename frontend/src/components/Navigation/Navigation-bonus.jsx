@@ -10,7 +10,7 @@ function Navigation({ isLoaded }) {
     <div className="nav-bar">
       <div className="logo-container">
         <NavLink to="/">
-          <img src="/favicon.ico" alt="Logo" />
+          <img src="/MythicalBNB.png" alt="Logo" className="logo-img" />
         </NavLink>
         <h1 className="logo-name">MythicalBnB</h1>
       </div>

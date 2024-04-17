@@ -38,6 +38,7 @@
 .image {
   width: 100%;
   /* border-radius: 20px; */
+  border-radius: 5px;
 }
 
 .image:hover {
@@ -50,6 +51,7 @@
   justify-content: space-between;
   /* border: palegreen solid 1px; */
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 5px;
 }
 
 .info:hover {

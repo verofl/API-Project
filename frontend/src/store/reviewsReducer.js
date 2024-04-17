@@ -24,7 +24,7 @@ export const getSpotReviews = (spotId) => async (dispatch) => {
 const reviewsReducer = (state = {}, action) => {
   switch (action.type) {
     case GET_REVIEWS: {
-      const newReviews = { ...state };
+      const newReviews = {};
       try {
         action.reviews.Reviews.forEach(
           (eachReview) => (newReviews[eachReview.id] = eachReview)

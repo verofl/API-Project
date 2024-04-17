@@ -1,27 +1,27 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createNewSpot, getOneSpot } from "../../store/spotsReducer";
+import { updateCurrSpot } from "../../store/spotsReducer";
 import { useNavigate } from "react-router-dom";
-import "./NewSpotPage.css";
+import { getOneSpot } from "../../store/spotsReducer";
 
-export default function CreateSpot() {
+export default function UpdateSpot() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.session.user);
-  const [country, setCountry] = useState("");
-  const [lat, setLat] = useState("");
-  const [lng, setLng] = useState("");
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [description, setDescription] = useState("");
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [previewImage, setPreviewImage] = useState("");
-  const [image1, setImage1] = useState("");
-  const [image2, setImage2] = useState("");
-  const [image3, setImage3] = useState("");
-  const [image4, setImage4] = useState("");
+  const [country, setCountry] = useState(spot?.country);
+  const [lat, setLat] = useState(spot?.lat);
+  const [lng, setLng] = useState(spot?.lng);
+  const [address, setAddress] = useState(spot?.address);
+  const [city, setCity] = useState(spot?.city);
+  const [state, setState] = useState(spot?.state);
+  const [description, setDescription] = useState(spot?.description);
+  const [name, setName] = useState(spot?.name);
+  const [price, setPrice] = useState(spot?.price);
+  const [previewImage, setPreviewImage] = useState(spot?.previewImage);
+  const [image1, setImage1] = useState(spot?.image1);
+  const [image2, setImage2] = useState(spot?.image2);
+  const [image3, setImage3] = useState(spot?.image3);
+  const [image4, setImage4] = useState(spot?.image4);
   const [imageErrors, setimageErrors] = useState([]);
   const [validationErrors, setValidationErrors] = useState({});
   const [hasSubmitted, setHasSubmitted] = useState(false);
@@ -101,15 +101,15 @@ export default function CreateSpot() {
       image4,
     };
 
-    const submit = await dispatch(createNewSpot(newSpot, newImages));
+    const updated = await dispatch(updateCurrSpot(newSpot, spotId));
+    dispatch(getOneSpot(updated));
 
-    dispatch(getOneSpot(submit));
-    navigate(`/spots/${submit.id}`);
+    navigate(`/spots/${updated.id}`);
   };
 
   return (
     <div className="whole-form-container">
-      <h1 className="form-name">Create Spot</h1>
+      <h1 className="form-name">Update Your Spot</h1>
       <form className="new-form-container" onSubmit={handleSubmit}>
         <div className="new form new-location">
           <h2>Where&apos;s your place located?</h2>
@@ -331,7 +331,7 @@ export default function CreateSpot() {
             </label>
           </span>
         </div>
-        <button className="create-spot-button">Create Spot</button>
+        <button className="create-spot-button">Update Spot</button>
       </form>
     </div>
   );

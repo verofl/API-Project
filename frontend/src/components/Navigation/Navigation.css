@@ -25,6 +25,10 @@
   text-decoration: none;
 }
 
+.navlink {
+  color: black;
+}
+
 .profile-button {
   display: flex;
   gap: 15px;
@@ -38,6 +42,11 @@
   flex-direction: row;
   align-items: center;
   padding: 10px;
+}
+
+.logo-img {
+  height: 40px;
+  padding-right: 10px;
 }
 
 .logo-name {
