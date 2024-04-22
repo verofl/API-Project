@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import "./Spot.css";
-// import { DeleteSpot } from "../DeleteSpot/DeleteSpot";
 // import UpdateSpot from "../UpdateSpot/UpdateSpot";
 import { DeleteSpot } from "../DeleteSpot/DeleteSpot";
 import OpenModalButton from "../OpenModalButton";

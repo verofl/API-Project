@@ -5,6 +5,7 @@ import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import { NavLink } from "react-router-dom";
+import "./ProfileButton-bonus.css";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -41,23 +42,22 @@ function ProfileButton({ user }) {
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
   return (
-    <div>
-      <button onClick={toggleMenu}>
+    <div className="menu">
+      <button onClick={toggleMenu} className="buttn-fa-user-circle">
         <i className="fas fa-user-circle" />
       </button>
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
           <>
-            <li>{user.username}</li>
-            <li>
-              {user.firstName} {user.lastName}
-            </li>
+            <li>Hello, {user.firstName}</li>
             <li>{user.email}</li>
             <NavLink className="navlink" to="/spots/current">
               Manage Spots
             </NavLink>
             <li>
-              <button onClick={logout}>Log Out</button>
+              <button onClick={logout} className="logout-bttn">
+                Log Out
+              </button>
             </li>
           </>
         ) : (

@@ -1,5 +1,7 @@
 .profile-dropdown {
   position: relative;
+  justify-content: center;
+  list-style-type: none;
 }
 
 .hidden {
@@ -11,7 +13,7 @@
   grid-template-columns: repeat(2, 50% 50%);
   /* padding: 10px; */
   margin-bottom: 20px;
-  border-bottom: black solid 2px;
+  border-bottom: black solid 1px;
   width: 100vw;
   background-color: #183d3d;
 }
@@ -51,4 +53,12 @@
 
 .logo-name {
   color: white;
+}
+
+.logout-bttn {
+  background-color: white;
+  color: clack;
+  border-radius: 10px;
+  padding: 5px;
+  margin-right: 5px;
 }
