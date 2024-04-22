@@ -20,8 +20,10 @@ export const DeleteSpot = ({ spot }) => {
 
   return (
     <div>
-      <h1>Confirm Delete</h1>
-      <p>Are you sure you want to remove this spot from the listings?</p>
+      <div className="confirmation-text">
+        <h1>Confirm Delete</h1>
+        <p>Are you sure you want to remove this spot from the listings?</p>
+      </div>
       <div className="button-cont">
         <button onClick={deleteEvent} className="yes-delete">
           {" "}

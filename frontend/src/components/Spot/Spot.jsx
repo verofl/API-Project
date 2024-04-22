@@ -17,39 +17,41 @@ const Spot = ({ data, isManagePage }) => {
 
   return (
     <div className="spots-container">
-      <div key={id} className="spot">
-        <div className="tooltip">
-          <span className="tooltiptext">{name}</span>
-          <img
-            className="image"
-            src={previewImage}
-            onClick={() => navigate(`/spots/${id}`)}
-          />
-        </div>
-        <div className="info">
-          <div className="left">
-            <p className="location">{`${city}, ${state}`}</p>
-            <p className="price">{`$${price} night`}</p>
-          </div>
-          <div className="right">
-            <p>
-              <i className="fa-solid fa-star"></i>
-              {` ${avgRating}`}
-            </p>
-          </div>
-        </div>
-        {isManagePage && (
-          <div className="manage-buttons">
-            <button className="update-b" onClick={createRedirect}>
-              Update
-            </button>
-            <OpenModalButton
-              buttonText="Delete"
-              modalComponent={<DeleteSpot spot={data} />}
+      <div className="image-info">
+        <div key={id} className="spot">
+          <div className="tooltip">
+            <span className="tooltiptext">{name}</span>
+            <img
+              className="image"
+              src={previewImage}
+              onClick={() => navigate(`/spots/${id}`)}
             />
           </div>
-        )}
+          <div className="info" onClick={() => navigate(`/spots/${id}`)}>
+            <div className="left">
+              <p className="location">{`${city}, ${state}`}</p>
+              <p className="price">{`$${price} night`}</p>
+            </div>
+            <div className="right">
+              <p>
+                <i className="fa-solid fa-star"></i>
+                {` ${avgRating}`}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
+      {isManagePage && (
+        <div className="manage-buttons">
+          <button className="update-b" onClick={createRedirect}>
+            Update
+          </button>
+          <OpenModalButton
+            buttonText="Delete"
+            modalComponent={<DeleteSpot spot={data} />}
+          />
+        </div>
+      )}
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createNewSpot, getOneSpot } from "../../store/spotsReducer";
+import { createNewSpot } from "../../store/spotsReducer";
 import { useNavigate } from "react-router-dom";
 import "./NewSpotPage.css";
 
@@ -25,7 +25,6 @@ export default function CreateSpot() {
   const [imageErrors, setimageErrors] = useState([]);
   const [validationErrors, setValidationErrors] = useState({});
   const [hasSubmitted, setHasSubmitted] = useState(false);
-
   useEffect(() => {
     const errors = {};
     if (!country.length) errors.country = "Country is required";
@@ -39,10 +38,8 @@ export default function CreateSpot() {
     if (!name.length) errors.name = "Name is required";
     if (!price || price < 0) errors.price = "Price is required";
     if (!previewImage.length) errors.previewImage = "Preview image is required";
-
     const imageErrors = [];
     const imageArr = [image1, image2, image3, image4];
-
     imageArr.forEach((image, index) => {
       if (
         image &&
@@ -55,7 +52,6 @@ export default function CreateSpot() {
         );
       }
     });
-
     setimageErrors(imageErrors);
     setValidationErrors(errors);
   }, [
@@ -75,11 +71,9 @@ export default function CreateSpot() {
     image3,
     image4,
   ]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setHasSubmitted(true);
-
     const newSpot = {
       user,
       country,
@@ -92,7 +86,6 @@ export default function CreateSpot() {
       name,
       price,
     };
-
     const newImages = {
       previewImage,
       image1,
@@ -103,8 +96,9 @@ export default function CreateSpot() {
 
     const submit = await dispatch(createNewSpot(newSpot, newImages));
 
-    dispatch(getOneSpot(submit));
+    // dispatch(getOneSpot(submit));
     navigate(`/spots/${submit.id}`);
+    window.location.reload();
   };
 
   return (

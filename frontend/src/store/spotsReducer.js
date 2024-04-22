@@ -27,6 +27,7 @@ export const createSpot = (spot) => {
     spot,
   };
 };
+
 export const updateSpot = (spot) => ({
   type: UPDATE_SPOT,
   spot,
@@ -53,11 +54,24 @@ export const getUserSpots = () => async (dispatch) => {
     dispatch(userSpots(spots));
   }
 };
-export const createNewSpot = (spot) => async (dispatch) => {
+
+export const getOneSpot = (spotId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/spots/${spotId}`);
+  if (response.ok) {
+    const spot = await response.json();
+    dispatch(oneSpot(spot));
+  }
+};
+
+export const createNewSpot = (spot, images) => async (dispatch, getState) => {
+  const state = getState(); // getting the info of the logged in user
+  const user = state.session.user; // have to use getState here to get the current user's info
+  const ownerId = user?.id;
+
   const res = await csrfFetch("/api/spots", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(spot),
+    body: JSON.stringify({ ...spot, ownerId }),
   });
 
   const createSpotImage = async (spotId, url, preview) => {
@@ -82,7 +96,6 @@ export const createNewSpot = (spot) => async (dispatch) => {
       true
     );
     spotImages.push(previewImage);
-
     const imageKeys = ["image1", "image2", "image3", "image4"];
     for (const key of imageKeys) {
       const imageUrl = images[key];
@@ -91,7 +104,6 @@ export const createNewSpot = (spot) => async (dispatch) => {
         spotImages.push(spotImage);
       }
     }
-
     data.SpotImages = spotImages;
     data.Owner = {
       firstName: user.firstName,
@@ -103,68 +115,13 @@ export const createNewSpot = (spot) => async (dispatch) => {
   }
 };
 
-export const getOneSpot = (spotId) => async (dispatch) => {
-  const response = await csrfFetch(`/api/spots/${spotId}`);
-  if (response.ok) {
-    const spot = await response.json();
-    dispatch(oneSpot(spot));
-  }
-};
-
-export const updateCurrSpot =
-  (spot, spotId, images) => async (dispatch, getState) => {
-    const state = getState(); // getting the info of the logged in user
-    const user = state.session.user; // have to use getState here to get the current user's info
-    const ownerId = user?.id;
-
-    const res = await csrfFetch(`/api/spots/${spotId}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...spot, ownerId }),
-    });
-
-    const createSpotImage = async (spotId, url, preview) => {
-      const res = await csrfFetch(`/api/spots/${spotId}/images`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url, preview }),
-      });
-      if (res.ok) {
-        const imageData = await res.json();
-        return { url: imageData.url, preview };
-      }
-      return null;
-    };
-
-    if (res.ok) {
-      const data = await res.json();
-      const spotImages = [];
-      const previewImage = await createSpotImage(
-        data.id,
-        images.previewImage,
-        true
-      );
-      spotImages.push(previewImage);
-
-      const imageKeys = ["image1", "image2", "image3", "image4"];
-      for (const key of imageKeys) {
-        const imageUrl = images[key];
-        if (imageUrl) {
-          const spotImage = await createSpotImage(data.id, imageUrl, false);
-          spotImages.push(spotImage);
-        }
-      }
-
-      data.SpotImages = spotImages;
-      data.Owner = {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        id: user.id,
-      };
-      dispatch(updateSpot(data));
-      return data;
-    }
-  };
+// export const updateCurrSpot = (spot, spotId, newImages) => async (dispatch) => {
+//   const res = await csrfFetch("/api/spots", {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify(spot),
+//   });
+// };
 
 export const deleteCurrSpot = (spotId) => async (dispatch) => {
   const response = await csrfFetch(`/api/spots/${spotId}`, {
