@@ -1,5 +1,6 @@
 import { csrfFetch } from "./csrf";
 
+// Types
 const GET_SPOTS = "spotsState/get_spots";
 const ONE_SPOT = "spotsState/one_spot";
 const USER_SPOTS = "spotsState/user_spots";
@@ -52,15 +53,11 @@ export const getUserSpots = () => async (dispatch) => {
     dispatch(userSpots(spots));
   }
 };
-export const createNewSpot = (spot, images) => async (dispatch, getState) => {
-  const state = getState(); // getting the info of the logged in user
-  const user = state.session.user; // have to use getState here to get the current user's info
-  const ownerId = user?.id;
-
+export const createNewSpot = (spot) => async (dispatch) => {
   const res = await csrfFetch("/api/spots", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ...spot, ownerId }),
+    body: JSON.stringify(spot),
   });
 
   const createSpotImage = async (spotId, url, preview) => {
@@ -114,27 +111,68 @@ export const getOneSpot = (spotId) => async (dispatch) => {
   }
 };
 
-export const updateCurrSpot = (spot, spotId) => async (dispatch) => {
-  const response = await csrfFetch(`/api/spots/${spotId}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(spot),
-  });
+export const updateCurrSpot =
+  (spot, spotId, images) => async (dispatch, getState) => {
+    const state = getState(); // getting the info of the logged in user
+    const user = state.session.user; // have to use getState here to get the current user's info
+    const ownerId = user?.id;
 
-  const updatedSpot = await response.json();
-  await dispatch(updateSpot(updatedSpot));
+    const res = await csrfFetch(`/api/spots/${spotId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...spot, ownerId }),
+    });
 
-  return updatedSpot;
-};
+    const createSpotImage = async (spotId, url, preview) => {
+      const res = await csrfFetch(`/api/spots/${spotId}/images`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url, preview }),
+      });
+      if (res.ok) {
+        const imageData = await res.json();
+        return { url: imageData.url, preview };
+      }
+      return null;
+    };
+
+    if (res.ok) {
+      const data = await res.json();
+      const spotImages = [];
+      const previewImage = await createSpotImage(
+        data.id,
+        images.previewImage,
+        true
+      );
+      spotImages.push(previewImage);
+
+      const imageKeys = ["image1", "image2", "image3", "image4"];
+      for (const key of imageKeys) {
+        const imageUrl = images[key];
+        if (imageUrl) {
+          const spotImage = await createSpotImage(data.id, imageUrl, false);
+          spotImages.push(spotImage);
+        }
+      }
+
+      data.SpotImages = spotImages;
+      data.Owner = {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        id: user.id,
+      };
+      dispatch(updateSpot(data));
+      return data;
+    }
+  };
 
 export const deleteCurrSpot = (spotId) => async (dispatch) => {
   const response = await csrfFetch(`/api/spots/${spotId}`, {
     method: "DELETE",
   });
-
   if (response.ok) {
-    await response.json();
-    dispatch(deleteSpot(spotId));
+    const data = await response.json();
+    dispatch(deleteSpot(data.spotId));
   }
 };
 
@@ -164,7 +202,8 @@ const spotsReducer = (state = initialState, action) => {
     case CREATE_SPOT:
       return { ...state, [action.spot.id]: action.spot };
     case UPDATE_SPOT:
-      return { ...state, [action.spot.id]: action.spot };
+      newState = { ...state, [action.spot.id]: action.spot };
+      return newState;
     case DELETE_SPOT:
       delete deleteState[action.spotId];
       return deleteState;

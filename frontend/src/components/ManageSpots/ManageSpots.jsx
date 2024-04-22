@@ -23,14 +23,19 @@ const ManageSpots = () => {
   return (
     <>
       <div className="manage-container">
-        <h1 className="manage-header">Manage Your Spots</h1>
+        <h1 className="manage-header">Manage Spots</h1>
         <button className="create-spot-bttn" onClick={() => createRedirect()}>
           Create a New Spot
         </button>
       </div>
       <div className="all-spots-container">
         {spots.map((spot) => (
-          <Spot data={spot} key={spot.id} className="all-spots-tiles" />
+          <Spot
+            data={spot}
+            key={spot.id}
+            className="all-spots-tiles"
+            isManagePage={true}
+          />
         ))}
       </div>
     </>

@@ -6,6 +6,7 @@
 .tooltip {
   position: relative;
   display: inline-block;
+  background-color: white;
 }
 
 .tooltip .tooltiptext {
@@ -38,7 +39,8 @@
 .image {
   width: 100%;
   /* border-radius: 20px; */
-  border-radius: 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 
 .image:hover {
@@ -51,7 +53,10 @@
   justify-content: space-between;
   /* border: palegreen solid 1px; */
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  border-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  padding: 0 5px 5px 5px;
+  background-color: white;
 }
 
 .info:hover {
@@ -60,4 +65,23 @@
 
 .fa-star {
   color: #5c8374;
+}
+
+.update-bttn {
+  background-color: #183d3d;
+  color: white;
+  border-radius: 10px;
+  padding: 5px;
+  margin-right: 5px;
+}
+
+.delete-bttn {
+  background-color: #183d3d;
+  color: white;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+button:hover {
+  cursor: pointer;
 }
