@@ -67,7 +67,7 @@
   color: #5c8374;
 }
 
-.update-bttn {
+.update-b {
   background-color: #183d3d;
   color: white;
   border-radius: 10px;
@@ -75,7 +75,7 @@
   margin-right: 5px;
 }
 
-.delete-bttn {
+.manage-buttons button {
   background-color: #183d3d;
   color: white;
   border-radius: 10px;

@@ -1,0 +1,17 @@
+.button-cont {
+  margin-top: 30px;
+}
+
+.yes-delete {
+  background-color: #183d3d;
+  color: white;
+  border-radius: 10px;
+  padding: 10px;
+  margin-right: 5px;
+}
+.no-delete {
+  background-color: #183d3d;
+  color: white;
+  border-radius: 10px;
+  padding: 10px;
+}

@@ -22,9 +22,14 @@ export const DeleteSpot = ({ spot }) => {
     <div>
       <h1>Confirm Delete</h1>
       <p>Are you sure you want to remove this spot from the listings?</p>
-      <div>
-        <button onClick={deleteEvent}> Yes(Delete Spot)</button>
-        <button onClick={closeModal}>No (Keep Spot)</button>
+      <div className="button-cont">
+        <button onClick={deleteEvent} className="yes-delete">
+          {" "}
+          Yes (Delete Spot)
+        </button>
+        <button onClick={closeModal} className="no-delete">
+          No (Keep Spot)
+        </button>
       </div>
     </div>
   );

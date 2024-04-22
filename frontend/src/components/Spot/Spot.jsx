@@ -41,7 +41,7 @@ const Spot = ({ data, isManagePage }) => {
         </div>
         {isManagePage && (
           <div className="manage-buttons">
-            <button className="update-button" onClick={createRedirect}>
+            <button className="update-b" onClick={createRedirect}>
               Update
             </button>
             <OpenModalButton
