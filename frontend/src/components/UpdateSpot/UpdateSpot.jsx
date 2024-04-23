@@ -18,8 +18,8 @@ export default function UpdateSpot() {
   const spots = Object.values(spotsObj.spots);
   let spot = spots.find((spot) => spot.id === Number(spotId));
 
-  console.log("ALL VALUES OF SPOTS OBJECT HERE =====> ", spots);
-  console.log("SPOT INFO HERE ======>", spot);
+  // console.log("ALL VALUES OF SPOTS OBJECT HERE =====> ", spots);
+  // console.log("SPOT INFO HERE ======>", spot);
   // console.log("SPOT INFO HERE ======>", spot.lat);
 
   // const currSpot = dispatch(getOneSpot(spotId));
