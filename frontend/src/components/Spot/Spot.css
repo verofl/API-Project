@@ -1,0 +1,102 @@
+.spot {
+  /* border: green solid 2px; */
+  aspect-ratio: 1 / 1;
+}
+
+.image-info {
+  transition: box-shadow 0.2s;
+  border-radius: 5px;
+  float: left;
+}
+
+.image-info:hover {
+  box-shadow: 0 0 15px #183d3d;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  background-color: white;
+  border-radius: 5px 5px 0px 0px;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 50%;
+  background-color: rgba(233, 239, 237, 0.8);
+  color: black;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+  cursor: pointer;
+}
+
+.image-container {
+  position: relative;
+  width: 100%;
+}
+
+.image {
+  width: 100%;
+  /* border-radius: 20px; */
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.image:hover {
+  cursor: pointer;
+}
+
+.info {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  justify-content: space-between;
+  /* border: palegreen solid 1px; */
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  padding: 0 5px 5px 5px;
+  background-color: white;
+}
+
+.info:hover {
+  cursor: pointer;
+}
+
+.fa-star {
+  color: #5c8374;
+}
+
+.update-b {
+  background-color: #183d3d;
+  color: white;
+  border-radius: 10px;
+  padding: 5px;
+  margin-right: 5px;
+}
+
+.manage-buttons button {
+  background-color: #183d3d;
+  color: white;
+  border-radius: 10px;
+  padding: 5px;
+  margin-top: 5px;
+}
+
+button:hover {
+  cursor: pointer;
+  transform: scale(1.2);
+  /* background-color: #5c8374;
+  color: white; */
+}

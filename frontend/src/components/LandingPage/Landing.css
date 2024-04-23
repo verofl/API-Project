@@ -1,23 +1,16 @@
-.spots-container {
-  border: red solid 5px;
+.all-spots-container {
   display: grid;
-  grid-template-columns: repeat(4, auto);
-  gap: 10px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  /* background-color: white; */
+  border-radius: 10px;
 }
 
-.spot {
-  border: green solid 2px;
-  aspect-ratio: 1 / 1;
-}
-
-.image {
-  aspect-ratio: 1 / 1;
-}
-.image:hover {
-  cursor: pointer;
-}
-
-.fa-star {
-  /* color: yellow; */
-  /* border: black solid 1px; */
+.all-spots-tiles {
+  border: 1px solid #ddd;
+  padding: 15px;
+  background-color: #f9f9f9;
 }

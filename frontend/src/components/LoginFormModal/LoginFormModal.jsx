@@ -24,6 +24,13 @@ function LoginFormModal() {
       });
   };
 
+  const demoUser = async (e) => {
+    e.preventDefault();
+    return dispatch(
+      sessionActions.login({ credential: "HighLady", password: "Rhysand" })
+    ).then(closeModal);
+  };
+
   return (
     <div className="login-modal">
       <h1 className="login-header">Log In</h1>
@@ -52,6 +59,9 @@ function LoginFormModal() {
         <button className="login-button" type="submit">
           Log In
         </button>
+        <a href="/" onClick={demoUser} className="demo-user-link">
+          Demo User
+        </a>
       </form>
     </div>
   );

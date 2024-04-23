@@ -1,0 +1,20 @@
+/* .menu {
+  background-color: white;
+} */
+
+.buttn-fa-user-circle {
+  border: none;
+  background-color: #183d3d;
+}
+
+.fa-user-circle {
+  color: #5c8374;
+}
+
+.menu li {
+  color: white;
+}
+.navlink {
+  color: white;
+  text-decoration: none;
+}

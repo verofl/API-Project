@@ -61,7 +61,7 @@ module.exports = {
           name: "Moonstone Palace",
           description:
             "Towering moonstone palace, perched above a gray-stoned mountain. A bookworm's perfect getaway location",
-          price: 894.1,
+          price: 894.98,
         },
         {
           ownerId: 2,

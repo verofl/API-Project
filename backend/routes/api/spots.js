@@ -196,16 +196,20 @@ router.get("/", queryParameters, async (req, res) => {
 
     let avgRating;
     if (totalReviews == 0) {
-      avgRating = "No Reviews Yet";
+      avgRating = "New";
     } else {
-      avgRating = totalStars / totalReviews;
+      avgRating = parseFloat(totalStars / totalReviews).toFixed(1);
     }
 
     let previewImage;
-    if (!eachSpot.SpotImages.length) {
+    const spotImage = await SpotImage.findOne({
+      where: { spotId: eachSpot.id },
+      order: [["id", "ASC"]], // Order SpotImages by ID in ascending order
+    });
+    if (!spotImage) {
       previewImage = "No Preview Image";
     } else {
-      previewImage = eachSpot.SpotImages[0].url; // Take the first spot image URL
+      previewImage = spotImage.url;
     }
 
     spotsArray.push({
@@ -249,6 +253,7 @@ router.get("/current", requireAuth, async (req, res) => {
       {
         model: SpotImage,
         attributes: ["url"],
+        order: [["id", "ASC"]],
       },
     ],
   });
@@ -265,16 +270,20 @@ router.get("/current", requireAuth, async (req, res) => {
 
     let avgRating;
     if (totalReviews == 0) {
-      avgRating = "No Reviews Yet";
+      avgRating = "New";
     } else {
-      avgRating = totalStars / totalReviews;
+      avgRating = parseFloat(totalStars / totalReviews).toFixed(1);
     }
 
     let previewImage;
-    if (!eachSpot.SpotImages.length) {
+    const spotImage = await SpotImage.findOne({
+      where: { spotId: eachSpot.id },
+      order: [["id", "ASC"]], // Order SpotImages by ID in ascending order
+    });
+    if (!spotImage) {
       previewImage = "No Preview Image";
     } else {
-      previewImage = eachSpot.SpotImages[0].url; // Take the first spot image URL
+      previewImage = spotImage.url;
     }
 
     allOwnerSpots.push({
@@ -339,9 +348,9 @@ router.get("/:spotId", async (req, res) => {
     // if (avgRating == null) avgRating = "No Reviews Yet";
     let avgRating;
     if (totalReviews == 0) {
-      avgRating = "No Reviews Yet";
+      avgRating = "New";
     } else {
-      avgRating = totalStars / totalReviews;
+      avgRating = parseFloat(totalStars / totalReviews).toFixed(1);
     }
 
     // let spotsImages;
@@ -363,7 +372,7 @@ router.get("/:spotId", async (req, res) => {
       updatedAt: new Date(spot.updatedAt).toLocaleString(),
       numReviews: parseFloat(totalReviews),
       avgStarRating: avgRating,
-      SpotImages: spot.SpotImages,
+      SpotImages: spot.SpotImages.sort((a, b) => a.id - b.id),
       Owner: spot.User,
     });
   } catch {
@@ -495,7 +504,7 @@ router.get("/:spotId/reviews", async (req, res) => {
     ],
   });
 
-  if (allReviews.length === 0) return res.json({ Reviews: "No Reviews Yet" });
+  if (allReviews.length === 0) return res.json({ Reviews: "New" });
 
   // allReviews.forEach((review) => {
   // });

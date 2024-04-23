@@ -66,7 +66,7 @@ router.get("/current", requireAuth, async (req, res) => {
     ],
   });
 
-  if (!allReviews.length) allUserReviews = "No Reviews Yet";
+  if (!allReviews.length) allUserReviews = "New";
 
   for (let eachReview of allReviews) {
     let previewImage;
