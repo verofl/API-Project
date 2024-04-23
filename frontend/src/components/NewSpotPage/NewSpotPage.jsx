@@ -173,6 +173,7 @@ export default function CreateSpot() {
               Latitude
               <input
                 type="number"
+                value={lat}
                 placeholder="Latitude"
                 onChange={(e) => setLat(e.target.value)}
               />
@@ -185,6 +186,7 @@ export default function CreateSpot() {
               Longitude
               <input
                 type="number"
+                value={lng}
                 placeholder="Longitude"
                 onChange={(e) => setLng(e.target.value)}
               />

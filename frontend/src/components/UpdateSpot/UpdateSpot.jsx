@@ -7,7 +7,7 @@ import "./UpdateSpot.css";
 export default function UpdateSpot() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.session.user);
+  // const user = useSelector((state) => state.session.user);
   const { spotId } = useParams();
 
   useEffect(() => {
@@ -20,6 +20,7 @@ export default function UpdateSpot() {
 
   console.log("ALL VALUES OF SPOTS OBJECT HERE =====> ", spots);
   console.log("SPOT INFO HERE ======>", spot);
+  // console.log("SPOT INFO HERE ======>", spot.lat);
 
   // const currSpot = dispatch(getOneSpot(spotId));
   // console.log("CURRENT SPOT HERE ======>", currSpot[spotId]);
@@ -77,10 +78,13 @@ export default function UpdateSpot() {
       price,
     };
 
+    // dispatch(updateCurrSpot(newSpot, spotId));
     const submit = await dispatch(updateCurrSpot(newSpot, spotId));
 
-    // dispatch(getOneSpot(submit));
-    navigate(`/spots/${submit.id}`);
+    if (submit) {
+      dispatch(getOneSpot(submit));
+      navigate(`/spots/${submit.id}`);
+    }
     window.location.reload();
   };
 
@@ -156,6 +160,7 @@ export default function UpdateSpot() {
               Latitude
               <input
                 type="number"
+                value={lat}
                 placeholder="Latitude"
                 onChange={(e) => setLat(e.target.value)}
               />
@@ -168,6 +173,7 @@ export default function UpdateSpot() {
               Longitude
               <input
                 type="number"
+                value={lng}
                 placeholder="Longitude"
                 onChange={(e) => setLng(e.target.value)}
               />

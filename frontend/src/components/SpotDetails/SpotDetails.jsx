@@ -21,6 +21,10 @@ const SpotDetails = () => {
     alert("Feature Coming Soon...");
   };
 
+  if (!spotData || !spotData.SpotImages) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="spot-details-container">
       {spotData && spotData.name && (
