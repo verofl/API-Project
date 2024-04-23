@@ -7,6 +7,8 @@ import OpenModalButton from "../OpenModalButton";
 const Spot = ({ data, isManagePage }) => {
   const navigate = useNavigate();
   const { id, name, previewImage, state, city, price, avgRating } = data;
+
+  // console.log("SPOT PAGE DATA ====>>>", data);
   // const pageUrl = window.location.href.split("/");
   // const currentWord = pageUrl.slice(-1);
   // console.log(pageUrl.slice(-1));

@@ -57,6 +57,8 @@ export const getUserSpots = () => async (dispatch) => {
 
 export const getOneSpot = (spotId) => async (dispatch) => {
   const response = await csrfFetch(`/api/spots/${spotId}`);
+
+  // console.log("REPSONSE GET ONE", response);
   if (response.ok) {
     const spot = await response.json();
     dispatch(oneSpot(spot));
@@ -115,13 +117,19 @@ export const createNewSpot = (spot, images) => async (dispatch, getState) => {
   }
 };
 
-// export const updateCurrSpot = (spot, spotId, newImages) => async (dispatch) => {
-//   const res = await csrfFetch("/api/spots", {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify(spot),
-//   });
-// };
+export const updateCurrSpot = (newSpot, spotId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/spots/${spotId}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(newSpot),
+  });
+
+  if (res.ok) {
+    const createdSpot = await res.json();
+    dispatch(updateSpot(createdSpot));
+    return createdSpot;
+  }
+};
 
 export const deleteCurrSpot = (spotId) => async (dispatch) => {
   const response = await csrfFetch(`/api/spots/${spotId}`, {
