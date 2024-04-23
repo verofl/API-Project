@@ -1,16 +1,17 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { deleteCurrReview, getSpotReviews } from "../../store/reviewsReducer";
+import { getSpotReviews } from "../../store/reviewsReducer";
 import { DeleteReview } from "../DeleteReview/DeleteReview";
 import OpenModalButton from "../OpenModalButton";
 import "./Reviews.css";
+import { CreateReview } from "../CreateReview/CreateReview";
 
 const Reviews = ({ avgStarRating, numReviews }) => {
   const dispatch = useDispatch();
   const reviews = useSelector((state) => state.reviewsState);
   const { spotId } = useParams();
-  const spot = useSelector((state) => state.spotsState[spotId]);
+  // const spot = useSelector((state) => state.spotsState[spotId]);
 
   const user = useSelector((state) => state.session.user);
   console.log("USER ======>", user.id);
@@ -21,7 +22,15 @@ const Reviews = ({ avgStarRating, numReviews }) => {
     dispatch(getSpotReviews(spotId));
   }, [dispatch, spotId]);
 
-  console.log("REVIEWS", reviews);
+  console.log("REVIEWS ARRAY", reviewsArray);
+
+  if (
+    !reviewsArray ||
+    !reviewsArray.length ||
+    reviewsArray.some((review) => !review.User)
+  ) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="reviews-container">
@@ -33,7 +42,10 @@ const Reviews = ({ avgStarRating, numReviews }) => {
         <p>{`${numReviews} ${numReviews === 1 ? "review" : "reviews"}`}</p>
       </div>
       <div className="post-review-bttn">
-        <button>Hello</button>
+        <OpenModalButton
+          buttonText="Post Your Review"
+          modalComponent={<CreateReview />}
+        />
       </div>
       {reviewsArray.length === 0 ? (
         <p>No Reviews Yet</p>

@@ -96,7 +96,7 @@
 
 button:hover {
   cursor: pointer;
-  transform: scale(1.2);
+  /* transform: scale(1.2); */
   /* background-color: #5c8374;
   color: white; */
 }
