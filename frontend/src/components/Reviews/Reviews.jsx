@@ -14,7 +14,7 @@ const Reviews = ({ avgStarRating, numReviews }) => {
   // const spot = useSelector((state) => state.spotsState[spotId]);
 
   const user = useSelector((state) => state.session.user);
-  console.log("USER ======>", user.id);
+  // console.log("USER ======>", user.id);
 
   const reviewsArray = Object.values(reviews);
 
@@ -25,16 +25,19 @@ const Reviews = ({ avgStarRating, numReviews }) => {
   console.log("REVIEWS ARRAY", reviewsArray);
 
   if (
-    !reviewsArray ||
-    !reviewsArray.length ||
+    // !reviewsArray ||
+    // !reviewsArray.length ||
     reviewsArray.some((review) => !review.User)
   ) {
     return <div>Loading...</div>;
   }
 
-  const alreadyHasReview = reviewsArray.some(
-    (review) => review.User.id === user.id
-  );
+  let alreadyHasReview;
+  if (user) {
+    alreadyHasReview = reviewsArray.some(
+      (review) => review.User.id === user.id
+    );
+  }
 
   return (
     <div className="reviews-container">
@@ -45,7 +48,7 @@ const Reviews = ({ avgStarRating, numReviews }) => {
         </p>
         <p>{`${numReviews} ${numReviews === 1 ? "review" : "reviews"}`}</p>
       </div>
-      {!alreadyHasReview && (
+      {user && !alreadyHasReview && (
         <div className="post-review-bttn">
           <OpenModalButton
             buttonText="Post Your Review"
@@ -66,7 +69,7 @@ const Reviews = ({ avgStarRating, numReviews }) => {
               })}
             </p>
             <p>{review.review}</p>
-            {review.userId === user.id && (
+            {user && review.userId === user.id && (
               <div className="review-delete">
                 <OpenModalButton
                   buttonText="Delete"
