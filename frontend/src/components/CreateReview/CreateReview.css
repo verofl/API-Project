@@ -1,0 +1,14 @@
+.new-review {
+  height: 100px;
+  width: 99%;
+}
+
+.new-star-rating {
+  display: flex;
+  justify-content: center;
+}
+
+.new-star-rating .fa-star {
+  font-size: 2rem;
+  padding-top: 10px;
+}
