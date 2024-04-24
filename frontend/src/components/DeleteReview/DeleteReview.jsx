@@ -1,13 +1,13 @@
 import { deleteCurrReview } from "../../store/reviewsReducer";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import "./DeleteReview.css";
 
 export const DeleteReview = ({ review }) => {
   const dispatch = useDispatch();
   const { closeModal } = useModal();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // console.log(spot.id);
   const deleteEvent = (e) => {
