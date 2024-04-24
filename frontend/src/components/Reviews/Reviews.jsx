@@ -32,6 +32,10 @@ const Reviews = ({ avgStarRating, numReviews }) => {
     return <div>Loading...</div>;
   }
 
+  const alreadyHasReview = reviewsArray.some(
+    (review) => review.User.id === user.id
+  );
+
   return (
     <div className="reviews-container">
       <div className="rating-info">
@@ -41,12 +45,14 @@ const Reviews = ({ avgStarRating, numReviews }) => {
         </p>
         <p>{`${numReviews} ${numReviews === 1 ? "review" : "reviews"}`}</p>
       </div>
-      <div className="post-review-bttn">
-        <OpenModalButton
-          buttonText="Post Your Review"
-          modalComponent={<CreateReview />}
-        />
-      </div>
+      {!alreadyHasReview && (
+        <div className="post-review-bttn">
+          <OpenModalButton
+            buttonText="Post Your Review"
+            modalComponent={<CreateReview />}
+          />
+        </div>
+      )}
       {reviewsArray.length === 0 ? (
         <p>No Reviews Yet</p>
       ) : (
