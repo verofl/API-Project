@@ -11,10 +11,12 @@ const Reviews = ({ avgStarRating, numReviews }) => {
   const dispatch = useDispatch();
   const reviews = useSelector((state) => state.reviewsState);
   const { spotId } = useParams();
-  // const spot = useSelector((state) => state.spotsState[spotId]);
+  const spot = useSelector((state) => state.spotsState[spotId]);
+  console.log("SPOT DATA =====>", spot);
+  console.log("OWNER ID =====>", spot.ownerId);
 
   const user = useSelector((state) => state.session.user);
-  // console.log("USER ======>", user.id);
+  console.log("USER ======>", user.id);
 
   const reviewsArray = Object.values(reviews);
 
@@ -38,6 +40,10 @@ const Reviews = ({ avgStarRating, numReviews }) => {
       (review) => review.User.id === user.id
     );
   }
+  let isOwner;
+  if (user.id == spot.ownerId) {
+    isOwner = true;
+  }
 
   return (
     <div className="reviews-container">
@@ -48,7 +54,7 @@ const Reviews = ({ avgStarRating, numReviews }) => {
         </p>
         <p>{`${numReviews} ${numReviews === 1 ? "review" : "reviews"}`}</p>
       </div>
-      {user && !alreadyHasReview && (
+      {user && !alreadyHasReview && !isOwner && (
         <div className="post-review-bttn">
           <OpenModalButton
             buttonText="Post Your Review"
