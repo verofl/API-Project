@@ -55,6 +55,10 @@ textarea {
   width: 100%;
 }
 
+.describe-new {
+  height: 120px;
+}
+
 .price-span {
   display: flex;
   flex-direction: row;

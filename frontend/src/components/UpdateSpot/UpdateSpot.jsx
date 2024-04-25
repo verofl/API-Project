@@ -191,7 +191,7 @@ export default function UpdateSpot() {
           </p>
           <label>
             <textarea
-              className="new-input"
+              className="new-input describe-new"
               value={description}
               type="text"
               placeholder="Please write at least 30 characters"

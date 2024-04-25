@@ -70,7 +70,8 @@ export const CreateReview = () => {
             onClick={() => setStars(num)}
             // onMouseEnter={() => fillInStars}
           ></i>
-        ))}
+        ))}{" "}
+        <h4> Stars</h4>
       </div>
       <div style={{ color: "red" }}>
         {hasSubmitted && validationErrors.stars}

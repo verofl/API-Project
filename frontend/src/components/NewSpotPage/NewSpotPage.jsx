@@ -103,7 +103,7 @@ export default function CreateSpot() {
 
   return (
     <div className="whole-form-container">
-      <h1 className="form-name">Create Spot</h1>
+      <h1 className="form-name">Create a New Spot</h1>
       <form className="new-form-container" onSubmit={handleSubmit}>
         <div className="new form new-location">
           <h2>Where&apos;s your place located?</h2>
@@ -204,7 +204,7 @@ export default function CreateSpot() {
           </p>
           <label>
             <textarea
-              className="new-input"
+              className="new-input describe-new"
               value={description}
               type="text"
               placeholder="Please write at least 30 characters"
