@@ -6,6 +6,7 @@ import { DeleteReview } from "../DeleteReview/DeleteReview";
 import OpenModalButton from "../OpenModalButton";
 import "./Reviews.css";
 import { CreateReview } from "../CreateReview/CreateReview";
+import { FaStar } from "react-icons/fa";
 
 const Reviews = ({ avgStarRating, numReviews }) => {
   const dispatch = useDispatch();
@@ -51,7 +52,7 @@ const Reviews = ({ avgStarRating, numReviews }) => {
     <div className="reviews-container">
       <div className="rating-info">
         <p>
-          <i className="fa-solid fa-star"></i>
+          <FaStar className="fa-star" />
           {avgStarRating}
         </p>
         <p>{`${numReviews} ${numReviews === 1 ? "review" : "reviews"}`}</p>

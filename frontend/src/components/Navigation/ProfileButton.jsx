@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import * as sessionActions from "../../store/session";
 import { useNavigate } from "react-router-dom";
+// import "./ProfileButton-bonus.css";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -38,9 +39,7 @@ function ProfileButton({ user }) {
 
   return (
     <>
-      <button onClick={toggleMenu}>
-        <i className="fas fa-user-circle" />
-      </button>
+      <button onClick={toggleMenu} className="buttn-fa-user-circle"></button>
       <ul className={ulClassName} ref={ulRef}>
         <li>{user.username}</li>
         <li>

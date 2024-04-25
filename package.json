@@ -6,9 +6,9 @@
   "dependencies": {
     "express-validator": "^7.0.1",
     "lodash": "^4.17.21",
+    "react-icons": "^5.1.0",
     "validator": "^13.11.0"
   },
-  "devDependencies": {},
   "scripts": {
     "install": "npm --prefix backend install backend",
     "dev:backend": "npm install --prefix backend start",

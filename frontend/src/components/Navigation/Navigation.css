@@ -37,6 +37,7 @@
   justify-self: right;
   align-items: center;
   padding-right: 10px;
+  /* border: red solid 5px; */
 }
 
 .logo-container {
@@ -44,6 +45,7 @@
   flex-direction: row;
   align-items: center;
   padding: 10px;
+  /* border: red solid 5px; */
 }
 
 .logo-img {

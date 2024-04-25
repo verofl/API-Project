@@ -34,7 +34,7 @@ export default function UpdateSpot() {
   const [description, setDescription] = useState(spot.description || "");
   const [name, setName] = useState(spot.name || "");
   const [price, setPrice] = useState(spot.price || "");
-  // const [previewImage, setPreviewImage] = useState(spot.previewImage || "");
+  const [previewImage, setPreviewImage] = useState(spot.previewImage || "");
   const [validationErrors, setValidationErrors] = useState({});
   const [hasSubmitted, setHasSubmitted] = useState(false);
   useEffect(() => {
@@ -49,7 +49,7 @@ export default function UpdateSpot() {
       errors.description = "Description needs a minimum of 30 characters";
     if (!name.length) errors.name = "Name is required";
     if (!price || price < 0) errors.price = "Price is required";
-    // if (!previewImage.length) errors.previewImage = "Preview image is required";
+    if (!previewImage.length) errors.previewImage = "Preview image is required";
     setValidationErrors(errors);
   }, [
     country,
@@ -84,8 +84,8 @@ export default function UpdateSpot() {
     if (submit) {
       dispatch(getOneSpot(submit));
       navigate(`/spots/${submit.id}`);
+      window.location.reload();
     }
-    window.location.reload();
   };
 
   return (
@@ -239,7 +239,7 @@ export default function UpdateSpot() {
             {hasSubmitted && validationErrors.price}
           </div>
         </div>
-        {/* <div className="new form new-photos-container">
+        <div className="new form new-photos-container">
           <h2>Liven up your spot with photos</h2>
           <p> Submit a link to at least one photo to publish your spot.</p>
           <span className="column photo-urls">
@@ -251,8 +251,8 @@ export default function UpdateSpot() {
             />
             <div style={{ color: "red" }}>
               {hasSubmitted && validationErrors.previewImage}
-            </div> */}
-        {/* <label className="column photo-urls">
+            </div>
+            {/* <label className="column photo-urls">
               <input
                 type="url"
                 value={image1}
@@ -312,8 +312,8 @@ export default function UpdateSpot() {
                 </span>
               }
             </label> */}
-        {/* </span>
-        </div> */}
+          </span>
+        </div>
         <button className="create-spot-button">Update Spot</button>
       </form>
     </div>
