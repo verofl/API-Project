@@ -48,6 +48,10 @@ const Reviews = ({ avgStarRating, numReviews }) => {
     }
   }
 
+  let reviewText = isOwner
+    ? "No Reviews Yet"
+    : "Be the first to post a review!";
+
   return (
     <div className="reviews-container">
       <div className="rating-info">
@@ -66,7 +70,7 @@ const Reviews = ({ avgStarRating, numReviews }) => {
         </div>
       )}
       {reviewsArray.length === 0 ? (
-        <p>No Reviews Yet</p>
+        <p>{reviewText}</p>
       ) : (
         reviewsArray.map((review) => (
           <div key={review.id} className="each-review">
