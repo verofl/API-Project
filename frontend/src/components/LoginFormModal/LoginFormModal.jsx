@@ -31,6 +31,9 @@ function LoginFormModal() {
     ).then(closeModal);
   };
 
+  const disablePassword = password.length < 6;
+  const disableUsername = credential.length < 4;
+
   return (
     <div className="login-modal">
       <h1 className="login-header">Log In</h1>
@@ -56,7 +59,11 @@ function LoginFormModal() {
           />
         </label>
         {errors.credential && <p>{errors.credential}</p>}
-        <button className="login-button" type="submit">
+        <button
+          className="login-button"
+          type="submit"
+          disabled={disablePassword && disableUsername}
+        >
           Log In
         </button>
         <a href="/" onClick={demoUser} className="demo-user-link">
