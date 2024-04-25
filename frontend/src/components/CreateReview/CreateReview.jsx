@@ -68,6 +68,7 @@ export const CreateReview = () => {
             key={num}
             className={num <= stars ? "fa-solid fa-star" : "fa-regular fa-star"}
             onClick={() => setStars(num)}
+            // onMouseEnter={() => fillInStars}
           ></i>
         ))}
       </div>

@@ -12,11 +12,11 @@ const Reviews = ({ avgStarRating, numReviews }) => {
   const reviews = useSelector((state) => state.reviewsState);
   const { spotId } = useParams();
   const spot = useSelector((state) => state.spotsState[spotId]);
-  console.log("SPOT DATA =====>", spot);
-  console.log("OWNER ID =====>", spot.ownerId);
+  // console.log("SPOT DATA =====>", spot);
+  // console.log("OWNER ID =====>", spot.ownerId);
 
   const user = useSelector((state) => state.session.user);
-  console.log("USER ======>", user.id);
+  // console.log("USER ======>", user.id);
 
   const reviewsArray = Object.values(reviews);
 
@@ -41,8 +41,10 @@ const Reviews = ({ avgStarRating, numReviews }) => {
     );
   }
   let isOwner;
-  if (user.id == spot.ownerId) {
-    isOwner = true;
+  if (user) {
+    if (user.id == spot.ownerId) {
+      isOwner = true;
+    }
   }
 
   return (
