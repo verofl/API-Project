@@ -60,7 +60,7 @@ function LoginFormModal() {
           Log In
         </button>
         <a href="/" onClick={demoUser} className="demo-user-link">
-          Demo User
+          Log in as Demo User
         </a>
       </form>
     </div>
