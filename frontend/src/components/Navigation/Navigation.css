@@ -69,3 +69,7 @@
   margin-right: 5px;
   margin-top: 8px;
 }
+
+.profile-dropdown li:hover {
+  cursor: pointer;
+}

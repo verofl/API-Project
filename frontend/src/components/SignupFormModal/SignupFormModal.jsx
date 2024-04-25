@@ -42,6 +42,8 @@ function SignupFormModal() {
     });
   };
 
+  const disableSignUpBttn = errors.length > 0;
+
   return (
     <div className="signup-modal">
       <h1 className="signup-header">Sign Up</h1>
@@ -112,7 +114,11 @@ function SignupFormModal() {
           />
         </label>
         {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-        <button className="signup-button" type="submit">
+        <button
+          className="signup-button"
+          type="submit"
+          disabled={disableSignUpBttn}
+        >
           Sign Up
         </button>
       </form>
