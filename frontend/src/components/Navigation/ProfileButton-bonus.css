@@ -16,8 +16,15 @@
 
 .menu li {
   color: white;
+  list-style-type: none;
 }
+
 .navlink {
+  color: white;
+  text-decoration: none;
+}
+
+.navlink:visited {
   color: white;
   text-decoration: none;
 }

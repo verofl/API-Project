@@ -1,7 +1,11 @@
 .profile-dropdown {
-  position: relative;
-  justify-content: center;
-  list-style-type: none;
+  position: absolute;
+  right: 10px;
+  top: 90px;
+  background-color: #183d3dd9;
+  border: black solid 1px;
+  padding: 5px;
+  z-index: 1000;
 }
 
 .hidden {
@@ -63,4 +67,5 @@
   border-radius: 10px;
   padding: 5px;
   margin-right: 5px;
+  margin-top: 8px;
 }
