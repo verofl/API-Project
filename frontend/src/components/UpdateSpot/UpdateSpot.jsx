@@ -61,7 +61,7 @@ export default function UpdateSpot() {
     description,
     name,
     price,
-    // previewImage,
+    previewImage,
   ]);
   const handleSubmit = async (e) => {
     e.preventDefault();
