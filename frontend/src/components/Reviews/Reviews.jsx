@@ -21,6 +21,10 @@ const Reviews = ({ avgStarRating, numReviews }) => {
 
   const reviewsArray = Object.values(reviews);
 
+  if (reviewsArray.length > 0) {
+    reviewsArray.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  }
+
   useEffect(() => {
     dispatch(getSpotReviews(spotId));
   }, [dispatch, spotId]);

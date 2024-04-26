@@ -9,11 +9,20 @@ const ManageSpots = () => {
   const spotsObj = useSelector((state) => state.spotsState);
   const spots = Object.values(spotsObj.spots);
 
+  // console.log("SPOTS DATA HERE ====>", spots);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(getUserSpots());
+    const getSpots = async () => {
+      try {
+        await dispatch(getUserSpots());
+      } catch (error) {
+        console.error("Error fetching spots");
+      }
+    };
+    getSpots();
   }, [dispatch]);
 
   const createRedirect = () => {

@@ -52,6 +52,8 @@ export const getUserSpots = () => async (dispatch) => {
     const spots = await response.json();
 
     dispatch(userSpots(spots));
+  } else {
+    throw new Error("Error fetching Spots");
   }
 };
 

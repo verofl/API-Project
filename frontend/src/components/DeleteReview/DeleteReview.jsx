@@ -21,7 +21,7 @@ export const DeleteReview = ({ review }) => {
     <div className="modal-confirmation">
       <div className="confirmation-text">
         <h1>Confirm Delete</h1>
-        <p>Are you sure you want to remove this review?</p>
+        <p>Are you sure you want to delete this review?</p>
       </div>
       <div className="button-cont">
         <div className="left">

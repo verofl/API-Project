@@ -3,14 +3,14 @@
 }
 
 .yes-delete {
-  background-color: #183d3d;
+  background-color: rgb(115, 0, 0);
   color: white;
   border-radius: 10px;
   padding: 10px;
   margin-right: 5px;
 }
 .no-delete {
-  background-color: #183d3d;
+  background-color: gray;
   color: white;
   border-radius: 10px;
   padding: 10px;
