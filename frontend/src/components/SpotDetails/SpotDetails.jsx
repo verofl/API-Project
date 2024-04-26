@@ -15,7 +15,7 @@ const SpotDetails = () => {
     dispatch(getOneSpot(spotId));
   }, [dispatch, spotId]);
 
-  console.log("SPOT DATA ===>>>>", spotData);
+  // console.log("SPOT DATA ===>>>>", spotData);
 
   const handleReservation = () => {
     alert("Feature Coming Soon...");
