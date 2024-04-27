@@ -17,7 +17,6 @@ export const DeleteSpot = ({ spot }) => {
     closeModal();
     navigate("/spots/current");
     dispatch(getUserSpots());
-    // window.location.reload();
   };
 
   return (
