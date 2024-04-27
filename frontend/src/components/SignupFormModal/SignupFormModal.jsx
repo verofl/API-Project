@@ -42,7 +42,18 @@ function SignupFormModal() {
     });
   };
 
-  const disableSignUpBttn = errors.length > 0;
+  let enable = false;
+  if (username.length > 3) {
+    if (password.length > 5) {
+      if (email.length) {
+        if (firstName.length) {
+          if (lastName.length) {
+            enable = true;
+          }
+        }
+      }
+    }
+  }
 
   return (
     <div className="signup-modal">
@@ -117,7 +128,7 @@ function SignupFormModal() {
         <button
           className="signup-button"
           type="submit"
-          disabled={disableSignUpBttn}
+          disabled={enable === false}
         >
           Sign Up
         </button>

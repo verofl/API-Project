@@ -31,8 +31,12 @@ function LoginFormModal() {
     ).then(closeModal);
   };
 
-  const disablePassword = password.length < 6;
-  const disableUsername = credential.length < 4;
+  let enable = false;
+  if (password.length > 5) {
+    if (credential.length > 3) {
+      enable = true;
+    }
+  }
 
   return (
     <div className="login-modal">
@@ -62,7 +66,7 @@ function LoginFormModal() {
         <button
           className="login-button"
           type="submit"
-          disabled={disablePassword && disableUsername}
+          disabled={enable === false}
         >
           Log In
         </button>

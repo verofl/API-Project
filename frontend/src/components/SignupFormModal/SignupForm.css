@@ -40,3 +40,12 @@
   color: white;
   border: black solid 1px;
 }
+
+.signup-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+button:not(:disabled):hover {
+  transform: scale(1.05);
+}
