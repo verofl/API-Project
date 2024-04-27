@@ -131,6 +131,7 @@ export const updateCurrSpot = (newSpot, spotId) => async (dispatch) => {
   if (res.ok) {
     const createdSpot = await res.json();
     dispatch(updateSpot(createdSpot));
+    dispatch(getOneSpot(spotId));
     return createdSpot;
   }
 };
