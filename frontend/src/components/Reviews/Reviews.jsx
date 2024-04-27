@@ -63,7 +63,12 @@ const Reviews = ({ avgStarRating, numReviews }) => {
           <FaStar className="fa-star" />
           {avgStarRating}
         </p>
-        <p>{`${numReviews} ${numReviews === 1 ? "review" : "reviews"}`}</p>
+        {numReviews > 0 && (
+          <>
+            <p>·</p>
+            <p>{`${numReviews} ${numReviews === 1 ? "review" : "reviews"}`}</p>
+          </>
+        )}
       </div>
       {user && !alreadyHasReview && !isOwner && (
         <div className="post-review-bttn">
