@@ -84,7 +84,6 @@ export default function UpdateSpot() {
     if (submit) {
       dispatch(getOneSpot(submit));
       navigate(`/spots/${submit.id}`);
-      // window.location.reload();
     }
   };
 

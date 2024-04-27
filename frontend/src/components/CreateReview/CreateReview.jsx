@@ -3,6 +3,8 @@ import { useModal } from "../../context/Modal";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { createNewReview } from "../../store/reviewsReducer";
+import { getOneSpot } from "../../store/spotsReducer";
+import { getSpotReviews } from "../../store/reviewsReducer";
 import "./CreateReview.css";
 
 export const CreateReview = () => {
@@ -34,10 +36,10 @@ export const CreateReview = () => {
     };
     const submit = await dispatch(createNewReview(spotId, newReview));
 
-    // dispatch(getOneSpot(submit));
     if (submit) {
-      closeModal;
-      window.location.reload();
+      dispatch(getOneSpot(spotId));
+      dispatch(getSpotReviews(spotId));
+      closeModal();
     }
   };
 

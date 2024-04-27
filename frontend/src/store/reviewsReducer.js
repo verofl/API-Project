@@ -40,6 +40,7 @@ export const createNewReview = (spotId, review) => async (dispatch) => {
 
   const createdReview = await res.json();
   dispatch(createReview(createdReview));
+  dispatch(loadReviews(spotId));
   return createdReview;
 };
 
