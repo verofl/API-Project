@@ -68,57 +68,51 @@ export const getOneSpot = (spotId) => async (dispatch) => {
   }
 };
 
-export const createNewSpot = (spot, images) => async (dispatch, getState) => {
-  const state = getState(); // getting the info of the logged in user
-  const user = state.session.user; // have to use getState here to get the current user's info
-  // const ownerId = user?.id;
-
-  const res = await csrfFetch("/api/spots", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(spot),
-  });
-
-  const createSpotImage = async (spotId, url, preview) => {
-    const res = await csrfFetch(`/api/spots/${spotId}/images`, {
+export const createNewSpot = (spot, images) => async (dispatch) => {
+  try {
+    const res = await csrfFetch("/api/spots", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ url, preview }),
+      body: JSON.stringify(spot),
     });
-    if (res.ok) {
-      const imageData = await res.json();
-      return { url: imageData.url, preview: true };
-    }
-    return null;
-  };
 
-  if (res.ok) {
-    const data = await res.json();
-    const spotImages = [];
-    const previewImage = await createSpotImage(
-      data.id,
-      images.previewImage,
-      true
-    );
-    spotImages.push(previewImage);
-    const imageKeys = ["image1", "image2", "image3", "image4"];
-    for (const key of imageKeys) {
-      const imageUrl = images[key];
-      if (imageUrl) {
-        const spotImage = await createSpotImage(data.id, imageUrl, false);
-        spotImages.push(spotImage);
-      }
+    if (!res.ok) {
+      throw new Error("Failed to create spot");
     }
-    data.SpotImages = spotImages;
-    data.Owner = {
-      firstName: user.firstName,
-      lastName: user.lastName,
-      id: user.id,
-    };
-    dispatch(createSpot(data));
-    dispatch(getOneSpot(data.id));
-    // console.log("DATA HEERE", data);
-    return data;
+
+    const createdSpot = await res.json();
+
+    const urls = Object.values(images);
+
+    const createdImagesPromises = urls.map(async (eachUrl) => {
+      if (eachUrl) {
+        const imageRes = await csrfFetch(
+          `/api/spots/${createdSpot.id}/images`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              url: eachUrl,
+              preview: true,
+            }),
+          }
+        );
+
+        if (!imageRes.ok) {
+          throw new Error("Failed to create image");
+        }
+      }
+    });
+
+    await Promise.all(createdImagesPromises);
+
+    dispatch(createSpot(createdSpot));
+    dispatch(getOneSpot(createdSpot.id));
+
+    return createdSpot;
+  } catch (error) {
+    console.error("Error creating spot:", error);
+    throw error;
   }
 };
 
