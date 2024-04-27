@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import "./DeleteSpot.css";
 import { useNavigate } from "react-router-dom";
+import { getUserSpots } from "../../store/spotsReducer";
 
 export const DeleteSpot = ({ spot }) => {
   const dispatch = useDispatch();
@@ -15,7 +16,8 @@ export const DeleteSpot = ({ spot }) => {
     dispatch(deleteCurrSpot(spot.id));
     closeModal();
     navigate("/spots/current");
-    window.location.reload();
+    dispatch(getUserSpots());
+    // window.location.reload();
   };
 
   return (

@@ -52,6 +52,7 @@ export const getUserSpots = () => async (dispatch) => {
     const spots = await response.json();
 
     dispatch(userSpots(spots));
+    // console.log("HITTING USER SPOTS THUNK");
   } else {
     throw new Error("Error fetching Spots");
   }
@@ -115,6 +116,7 @@ export const createNewSpot = (spot, images) => async (dispatch, getState) => {
       id: user.id,
     };
     dispatch(createSpot(data));
+    // dispatch(getOneSpot(spot));
     return data;
   }
 };
@@ -140,6 +142,7 @@ export const deleteCurrSpot = (spotId) => async (dispatch) => {
   if (response.ok) {
     const data = await response.json();
     dispatch(deleteSpot(data.spotId));
+    dispatch(getUserSpots());
   }
 };
 

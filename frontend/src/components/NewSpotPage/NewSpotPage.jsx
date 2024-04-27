@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createNewSpot } from "../../store/spotsReducer";
 import { useNavigate } from "react-router-dom";
 import "./NewSpotPage.css";
+import { getOneSpot } from "../../store/spotsReducer";
 
 export default function CreateSpot() {
   const navigate = useNavigate();
@@ -96,8 +97,8 @@ export default function CreateSpot() {
 
     const submit = await dispatch(createNewSpot(newSpot, newImages));
 
-    // dispatch(getOneSpot(submit));
     navigate(`/spots/${submit.id}`);
+    dispatch(getOneSpot(submit));
     window.location.reload();
   };
 
