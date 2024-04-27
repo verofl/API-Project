@@ -51,6 +51,8 @@ export const deleteCurrReview = (reviewId) => async (dispatch) => {
   if (response.ok) {
     const data = await response.json();
     dispatch(deleteReview(data.reviewId));
+    dispatch(loadReviews(data.spotId));
+    return data;
   }
 };
 

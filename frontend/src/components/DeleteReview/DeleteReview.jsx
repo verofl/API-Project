@@ -3,18 +3,27 @@ import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 // import { useNavigate } from "react-router-dom";
 import "./DeleteReview.css";
+import { getSpotReviews } from "../../store/reviewsReducer";
+import { useParams } from "react-router-dom";
+import { getOneSpot } from "../../store/spotsReducer";
 
 export const DeleteReview = ({ review }) => {
   const dispatch = useDispatch();
   const { closeModal } = useModal();
+  const { spotId } = useParams();
   // const navigate = useNavigate();
 
   // console.log(spot.id);
-  const deleteEvent = (e) => {
+  const deleteEvent = async (e) => {
     e.preventDefault();
-    dispatch(deleteCurrReview(review.id));
-    closeModal();
-    window.location.reload();
+
+    const deleted = await dispatch(deleteCurrReview(review.id));
+
+    if (deleted) {
+      dispatch(getOneSpot(spotId));
+      dispatch(getSpotReviews(spotId));
+      closeModal();
+    }
   };
 
   return (
