@@ -71,12 +71,12 @@ export const getOneSpot = (spotId) => async (dispatch) => {
 export const createNewSpot = (spot, images) => async (dispatch, getState) => {
   const state = getState(); // getting the info of the logged in user
   const user = state.session.user; // have to use getState here to get the current user's info
-  const ownerId = user?.id;
+  // const ownerId = user?.id;
 
   const res = await csrfFetch("/api/spots", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ...spot, ownerId }),
+    body: JSON.stringify(spot),
   });
 
   const createSpotImage = async (spotId, url, preview) => {
@@ -87,7 +87,7 @@ export const createNewSpot = (spot, images) => async (dispatch, getState) => {
     });
     if (res.ok) {
       const imageData = await res.json();
-      return { url: imageData.url, preview };
+      return { url: imageData.url, preview: true };
     }
     return null;
   };
@@ -116,7 +116,8 @@ export const createNewSpot = (spot, images) => async (dispatch, getState) => {
       id: user.id,
     };
     dispatch(createSpot(data));
-    // dispatch(getOneSpot(spot));
+    dispatch(getOneSpot(data.id));
+    console.log("DATA HEERE", data);
     return data;
   }
 };

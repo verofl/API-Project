@@ -76,15 +76,15 @@ export default function CreateSpot() {
     e.preventDefault();
     setHasSubmitted(true);
     const newSpot = {
-      user,
-      country,
-      lat,
-      lng,
+      // user,
       address,
       city,
       state,
-      description,
+      country,
+      lat,
+      lng,
       name,
+      description,
       price,
     };
     const newImages = {
@@ -97,9 +97,11 @@ export default function CreateSpot() {
 
     const submit = await dispatch(createNewSpot(newSpot, newImages));
 
-    navigate(`/spots/${submit.id}`);
-    dispatch(getOneSpot(submit));
-    window.location.reload();
+    if (submit) {
+      navigate(`/spots/${submit.id}`);
+      dispatch(getOneSpot(submit.id));
+      window.location.reload();
+    }
   };
 
   return (
