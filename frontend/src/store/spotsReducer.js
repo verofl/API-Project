@@ -117,7 +117,7 @@ export const createNewSpot = (spot, images) => async (dispatch, getState) => {
     };
     dispatch(createSpot(data));
     dispatch(getOneSpot(data.id));
-    console.log("DATA HEERE", data);
+    // console.log("DATA HEERE", data);
     return data;
   }
 };
