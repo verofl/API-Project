@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createNewSpot } from "../../store/spotsReducer";
 import { useNavigate } from "react-router-dom";
-import "./NewSpotPage.css";
 import { getOneSpot } from "../../store/spotsReducer";
+import "./NewSpotPage.css";
 
 export default function CreateSpot() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.session.user);
+
   const [country, setCountry] = useState("");
   const [lat, setLat] = useState("");
   const [lng, setLng] = useState("");
@@ -18,14 +19,17 @@ export default function CreateSpot() {
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
+
   const [previewImage, setPreviewImage] = useState("");
   const [image1, setImage1] = useState("");
   const [image2, setImage2] = useState("");
   const [image3, setImage3] = useState("");
   const [image4, setImage4] = useState("");
+
   const [imageErrors, setimageErrors] = useState([]);
   const [validationErrors, setValidationErrors] = useState({});
   const [hasSubmitted, setHasSubmitted] = useState(false);
+
   useEffect(() => {
     const errors = {};
     if (!country.length) errors.country = "Country is required";
@@ -76,7 +80,7 @@ export default function CreateSpot() {
     e.preventDefault();
     setHasSubmitted(true);
     const newSpot = {
-      // user,
+      ownerId: user.id,
       address,
       city,
       state,
