@@ -69,50 +69,32 @@ export const getOneSpot = (spotId) => async (dispatch) => {
 };
 
 export const createNewSpot = (spot, images) => async (dispatch) => {
-  try {
-    const res = await csrfFetch("/api/spots", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(spot),
+  const urls = Object.values(images);
+
+  const response = await csrfFetch("/api/spots", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(spot),
+  });
+  if (response.status !== 201) {
+    throw new Error("Spot could not be created.");
+  }
+  if (response.ok) {
+    const newSpot = await response.json();
+
+    const newImages = urls.forEach((url) => {
+      url &&
+        csrfFetch(`/api/spots/${newSpot.id}/images`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            url: url,
+            preview: true,
+          }),
+        });
     });
-
-    if (!res.ok) {
-      throw new Error("Failed to create spot");
-    }
-
-    const createdSpot = await res.json();
-
-    const urls = Object.values(images);
-
-    const createdImagesPromises = urls.map(async (eachUrl) => {
-      if (eachUrl) {
-        const imageRes = await csrfFetch(
-          `/api/spots/${createdSpot.id}/images`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              url: eachUrl,
-              preview: true,
-            }),
-          }
-        );
-
-        if (!imageRes.ok) {
-          throw new Error("Failed to create image");
-        }
-      }
-    });
-
-    await Promise.all(createdImagesPromises);
-
-    dispatch(createSpot(createdSpot));
-    // dispatch(oneSpot(createdSpot.id));
-
-    return createdSpot;
-  } catch (error) {
-    console.error("Error creating spot:", error);
-    throw error;
+    await dispatch(createSpot(newSpot, newImages));
+    return newSpot;
   }
 };
 
