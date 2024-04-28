@@ -32,11 +32,11 @@ const SpotDetails = () => {
       <div className="details-img-cont">
         <img
           className="image"
-          src={spotData.SpotImages[0].url}
+          src={spotData?.SpotImages[0]?.url}
           alt="Spot Preview"
         />
         <div className="four-images">
-          {spotData.SpotImages.slice(1, 5).map((image, index) => (
+          {spotData.SpotImages?.slice(1, 5).map((image, index) => (
             <img
               className="small-images"
               key={index}

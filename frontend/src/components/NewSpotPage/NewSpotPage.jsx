@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createNewSpot } from "../../store/spotsReducer";
 import { useNavigate } from "react-router-dom";
-// import { getOneSpot } from "../../store/spotsReducer";
+import { getOneSpot } from "../../store/spotsReducer";
 import "./NewSpotPage.css";
 
 export default function CreateSpot() {
@@ -101,6 +101,7 @@ export default function CreateSpot() {
     try {
       const submit = await dispatch(createNewSpot(newSpot, newImages));
       if (submit) {
+        dispatch(getOneSpot(submit.id));
         navigate(`/spots/${submit.id}`);
       }
     } catch (error) {
