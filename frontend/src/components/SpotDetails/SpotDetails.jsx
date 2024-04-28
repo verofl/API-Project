@@ -21,7 +21,7 @@ const SpotDetails = () => {
     fetchSpotData();
   }, [dispatch, spotId]);
 
-  console.log("SPOT DATA ======>", spotData);
+  // console.log("SPOT DATA ======>", spotData);
   if (loading || !spotData || !spotData.SpotImages || !spotData.Owner) {
     return <div>Loading...</div>;
   }

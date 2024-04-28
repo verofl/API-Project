@@ -91,7 +91,7 @@ export const createNewSpot = (spot, images) => async (dispatch) => {
           preview: true,
         }),
       });
-      console.log("URLS =>>>>", urls);
+      // console.log("URLS =>>>>", urls);
     });
     dispatch(createSpot(newSpot));
     dispatch(getOneSpot(newSpot.id));
