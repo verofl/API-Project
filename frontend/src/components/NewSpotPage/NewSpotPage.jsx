@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createNewSpot } from "../../store/spotsReducer";
 import { useNavigate } from "react-router-dom";
-import { getOneSpot } from "../../store/spotsReducer";
+// import { getOneSpot } from "../../store/spotsReducer";
 import "./NewSpotPage.css";
 
 export default function CreateSpot() {
@@ -80,7 +80,6 @@ export default function CreateSpot() {
     e.preventDefault();
     setHasSubmitted(true);
     const newSpot = {
-      ownerId: user.id,
       address,
       city,
       state,
@@ -99,12 +98,13 @@ export default function CreateSpot() {
       image4,
     };
 
-    const submit = await dispatch(createNewSpot(newSpot, newImages));
-
-    if (submit) {
-      navigate(`/spots/${submit.id}`);
-      dispatch(getOneSpot(submit.id));
-      window.location.reload();
+    try {
+      const submit = await dispatch(createNewSpot(newSpot, newImages));
+      if (submit) {
+        navigate(`/spots/${submit.id}`);
+      }
+    } catch (error) {
+      console.error("Error creating new spot:", error);
     }
   };
 

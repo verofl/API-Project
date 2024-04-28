@@ -107,7 +107,7 @@ export const createNewSpot = (spot, images) => async (dispatch) => {
     await Promise.all(createdImagesPromises);
 
     dispatch(createSpot(createdSpot));
-    dispatch(getOneSpot(createdSpot.id));
+    // dispatch(oneSpot(createdSpot.id));
 
     return createdSpot;
   } catch (error) {
