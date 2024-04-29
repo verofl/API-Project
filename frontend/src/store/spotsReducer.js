@@ -76,22 +76,20 @@ export const createNewSpot = (spot, images) => async (dispatch) => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(spot),
   });
-  if (response.status !== 201) {
-    throw new Error("Failure to create spot.");
-  }
+
   if (response.ok) {
     const newSpot = await response.json();
 
     urls.forEach((url) => {
       csrfFetch(`/api/spots/${newSpot.id}/images`, {
         method: "POST",
-        // headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           url: url,
           preview: true,
         }),
       });
       // console.log("URLS =>>>>", urls);
+      // console.log("newSpot JSON =========>", newSpot);
     });
     dispatch(createSpot(newSpot));
     dispatch(getOneSpot(newSpot.id));

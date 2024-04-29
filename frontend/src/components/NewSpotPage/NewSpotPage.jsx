@@ -98,14 +98,10 @@ export default function CreateSpot() {
       image4,
     };
 
-    try {
-      const submit = await dispatch(createNewSpot(newSpot, newImages));
-      if (submit) {
-        dispatch(getOneSpot(submit.id));
-        navigate(`/spots/${submit.id}`);
-      }
-    } catch (error) {
-      console.error("Error creating new spot:", error);
+    const submit = await dispatch(createNewSpot(newSpot, newImages));
+    if (submit) {
+      dispatch(getOneSpot(submit.id));
+      navigate(`/spots/${submit.id}`);
     }
   };
 

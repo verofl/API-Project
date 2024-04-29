@@ -82,7 +82,7 @@ export default function UpdateSpot() {
     const submit = await dispatch(updateCurrSpot(newSpot, spotId));
 
     if (submit) {
-      dispatch(getOneSpot(submit));
+      dispatch(getOneSpot(submit.id));
       navigate(`/spots/${submit.id}`);
     }
   };
