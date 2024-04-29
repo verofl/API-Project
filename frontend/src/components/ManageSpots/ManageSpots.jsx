@@ -29,6 +29,12 @@ const ManageSpots = () => {
     navigate("/spots/new");
   };
 
+  let hasSpots = true;
+
+  if (!spots || !spots.length) {
+    hasSpots = false;
+  }
+
   return (
     <>
       <div className="manage-container">
@@ -37,16 +43,20 @@ const ManageSpots = () => {
           Create a New Spot
         </button>
       </div>
-      <div className="all-spots-container">
-        {spots.map((spot) => (
-          <Spot
-            data={spot}
-            key={spot.id}
-            className="all-spots-tiles"
-            isManagePage={true}
-          />
-        ))}
-      </div>
+      {!hasSpots ? (
+        <div className="all-spots-container">
+          {spots.map((spot) => (
+            <Spot
+              data={spot}
+              key={spot.id}
+              className="all-spots-tiles"
+              isManagePage={true}
+            />
+          ))}
+        </div>
+      ) : (
+        <div></div>
+      )}
     </>
   );
 };

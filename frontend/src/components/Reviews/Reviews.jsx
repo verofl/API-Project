@@ -29,7 +29,7 @@ const Reviews = ({ avgStarRating, numReviews }) => {
     dispatch(getSpotReviews(spotId));
   }, [dispatch, spotId]);
 
-  console.log("REVIEWS ARRAY", reviewsArray);
+  // console.log("REVIEWS ARRAY", reviewsArray);
 
   if (
     // !reviewsArray ||
