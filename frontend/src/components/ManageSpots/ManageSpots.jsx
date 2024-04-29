@@ -10,6 +10,7 @@ const ManageSpots = () => {
   const spots = Object.values(spotsObj.spots);
 
   // console.log("SPOTS DATA HERE ====>", spots);
+  // console.log("SPOTS DATA HERE ====>", spotsObj);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
