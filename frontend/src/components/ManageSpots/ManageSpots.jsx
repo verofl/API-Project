@@ -43,7 +43,7 @@ const ManageSpots = () => {
           Create a New Spot
         </button>
       </div>
-      {!hasSpots ? (
+      {hasSpots ? (
         <div className="all-spots-container">
           {spots.map((spot) => (
             <Spot
