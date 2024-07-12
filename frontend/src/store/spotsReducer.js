@@ -116,11 +116,15 @@ export const deleteCurrSpot = (spotId) => async (dispatch) => {
   const response = await csrfFetch(`/api/spots/${spotId}`, {
     method: "DELETE",
   });
-  if (response.ok) {
-    const data = await response.json();
-    dispatch(deleteSpot(data.spotId));
-    dispatch(getUserSpots());
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    return { errors: data };
   }
+
+  await dispatch(deleteSpot(data.spotId));
+  // dispatch(getUserSpots());
 };
 
 // Reducer
